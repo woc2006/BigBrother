@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding:0;
+}
+.animate{
+    -webkit-transition:-webkit-transform;
+    -webkit-transition-duration: 500ms;
+}
+
+.container{
+    position: absolute;
+    width:1280px;
+    height: 720px;
+    overflow: hidden;
+}
+
+#sessions{
+    background-color: #D4F870;
+}
+
+#rules{
+    -webkit-transform:translate3d(1180px,0,0);
+    -webkit-box-shadow: -3px 0 3px #6C9F00;
+    background-color: #36D792;
+    z-index:2;
+}
+
+#config{
+    -webkit-transform: translate3d(1230px,0,0);
+    -webkit-box-shadow: -3px 0 3px #6C9F00;
+    background-color: #FFCD40;
+    z-index:4;
+}

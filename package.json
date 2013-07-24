@@ -1,0 +1,11 @@
+{
+    "name": "BigBrother",
+    "main": "index.html",
+    "window":{
+        "width":1280,
+        "height":720
+        //"resizable":false,
+        //"toolbar":true, //for debug only
+        //"frame":false
+    }
+}
