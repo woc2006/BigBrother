@@ -1,3 +1,6 @@
-var pageControl = require('./assets/js/pageControl');
+var inherits = require('./lib/inherits'); //require to run inherits code.
+var pageControl = require('./pageControl');
 
-pageControl.init();
+exports.init = function(){
+    pageControl.init();
+}

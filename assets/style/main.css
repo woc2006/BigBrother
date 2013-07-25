@@ -1,12 +1,47 @@
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    background: rgba(255,0,0,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+/*
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('../font/fontawesome-webfont.ttf');
+}*/
+
 *{
     margin: 0;
     padding:0;
+    font-family: 'Helvetic';
 }
+
+body{
+    overflow:hidden;
+}
+/*public class*/
 .animate{
     -webkit-transition:-webkit-transform;
     -webkit-transition-duration: 500ms;
 }
 
+.blod{
+    font-weight: bold;
+}
+
+.italic{
+    font-style: italic;
+}
+/*pages*/
 .container{
     position: absolute;
     width:1280px;
@@ -30,4 +65,96 @@
     -webkit-box-shadow: -3px 0 3px #6C9F00;
     background-color: #FFCD40;
     z-index:4;
+}
+
+.title{
+    padding-left: 40px;
+    font-size: 36px;
+    color:white;
+    margin: 3px;
+}
+
+.checkbox{
+    display: inline-block;
+    border: 1px solid #DDD;
+    background: #CCC;
+    width: 80px;
+    height: 25px;
+    position: relative;
+    vertical-align: middle;
+    margin:0;
+}
+
+.checkbox-on{
+    background-color: #528CE0;
+}
+.checkboxBar{
+    margin:0;
+    position: absolute;
+    width: 40px;
+    height: 25px;
+    background-color: white;
+}
+
+/*page sessions*/
+#session-list{
+    margin: 10px;
+    max-width: 1158px;
+    width: 1158px;
+    overflow: hidden;
+    height: 700px;
+}
+
+#session-list:hover{
+    overflow-y: scroll;
+}
+
+#session-list li{
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 1px;
+    background-color: #F4FF80;
+    -webkit-user-drag:element;
+}
+
+#session-list span{
+    display: inline-block;
+    padding: 0 2px 0 2px;
+    height: 20px;
+    line-height: 20px;
+}
+#session-list .status{
+    width: 40px;
+}
+
+#session-list .host{
+    width: 180px;
+}
+
+#session-list .query{
+    width:900px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/*page config*/
+#config section{
+    height:27px;
+    line-height: 27px;
+}
+
+/*icons*/
+.icon{
+    width:36px;
+    height:36px;
+    display: inline-block;
+}
+.add{
+    background: url('../img/add.png') no-repeat;
+}
+.cancel{
+    background: url('../img/cancel.png') no-repeat;
+}
+.ok{
+    background: url('../img/ok.png') no-repeat;
 }

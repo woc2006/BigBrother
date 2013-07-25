@@ -2,10 +2,14 @@
     "name": "BigBrother",
     "main": "index.html",
     "window":{
+        "resizable":false,
+        //"toolbar":false,
+        "frame":false,
         "width":1280,
-        "height":720
-        //"resizable":false,
-        //"toolbar":true, //for debug only
-        //"frame":false
+        "height":720,
+		"max_width":1280,
+		"max_height":720,
+		"position": "center"
+
     }
 }
