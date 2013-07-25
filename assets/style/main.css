@@ -10,7 +10,7 @@
 
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
-    background: rgba(255,0,0,0.8);
+    background: rgba(252,195,49,0.8);
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 /*
@@ -32,6 +32,7 @@ body{
 .animate{
     -webkit-transition:-webkit-transform;
     -webkit-transition-duration: 500ms;
+    -webkit-backface-visibility:hidden;
 }
 
 .blod{
@@ -50,7 +51,7 @@ body{
 }
 
 #sessions{
-    background-color: #D4F870;
+    background-color: #cdff5f;
 }
 
 #rules{
@@ -97,6 +98,13 @@ body{
 }
 
 /*page sessions*/
+#back-des{
+    color:black;
+    font-size: 36px;
+    text-align: center;
+    padding-top: 25%;
+}
+
 #session-list{
     margin: 10px;
     max-width: 1158px;

@@ -4,7 +4,7 @@
     "window":{
         "resizable":false,
         //"toolbar":false,
-        "frame":false,
+        //"frame":false,
         "width":1280,
         "height":720,
 		"max_width":1280,
