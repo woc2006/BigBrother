@@ -1,4 +1,6 @@
 var http = require('http');
+var Buffer = require('buffer').Buffer;
+
 
 exports.request = function(conf){
     var request = http.request({
@@ -6,7 +8,7 @@ exports.request = function(conf){
         port: 80,
         method: conf.method || 'GET',
         path: conf.path || '/',
-        headers: conf.headers || []
+        headers: conf.headers || {}
     },function(res){
         clearTimeout(requestTimeout);
         var responseTimeout = setTimeout(function(){
@@ -28,7 +30,7 @@ exports.request = function(conf){
         });
     });
 
-    if(conf.method == 'POST'){
+    if(conf.method === 'POST'){
         request.write(conf.data);
     }
 

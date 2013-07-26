@@ -130,6 +130,8 @@ body{
     padding: 0 2px 0 2px;
     height: 20px;
     line-height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 #session-list .status{
     width: 40px;
@@ -141,8 +143,6 @@ body{
 
 #session-list .query{
     width:900px;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 /*page config*/
