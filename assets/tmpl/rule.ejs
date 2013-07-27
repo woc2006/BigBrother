@@ -1,0 +1,6 @@
+<%for(var i=0,len = rules.length;i<len;i++){
+        var rule = rules[i];
+        %>
+<li><div id="ruleItem-<%=rule.id%>" class="checkbox <%=(rule.enable?'checkbox-on':'')%>"></div>
+<span class="type"><%=rule.type%>:</span><span><%=rule.source%></span><span class="arrow">=&gt;</span><span><%=rule.dest%></span></li>
+<%}%>

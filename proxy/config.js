@@ -1,3 +1,5 @@
+var $ = window.$;
+
 var filterItems = {
     '200' : {
         type:'Request 200',
@@ -75,6 +77,33 @@ var getResourceType = function(path, type){
     }
 }
 
+exports.importFilter = function(raw){
+    var conf;
+    try{
+        conf = JSON.parse(raw);
+    }catch(e){
+        return;
+    }
+    filterItems = $.extend(filterItems,conf);
+};
+
+exports.importStyle = function(raw){
+    var conf;
+    try{
+        conf = JSON.parse(raw);
+    }catch(e){
+        return;
+    }
+    ruleStyle = $.extend(ruleStyle,conf);
+};
+
+exports.exportFilter = function(){
+    return JSON.stringify(filterItems);
+};
+
+exports.exportStyle = function(){
+    return JSON.stringify(ruleStyle);
+}
 
 exports.updateConfig = function(id,type,val){
     if(!filterItems[id] || typeof filterItems[id][type] == 'undefined') return;

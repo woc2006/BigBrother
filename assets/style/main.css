@@ -28,9 +28,13 @@
 body{
     overflow:hidden;
 }
+
+ul{
+    list-style: none;
+}
 /*public class*/
 .animate{
-    -webkit-transition:-webkit-transform;
+    -webkit-transition:-webkit-transform height;
     -webkit-transition-duration: 500ms;
     -webkit-backface-visibility:hidden;
     overflow: hidden;
@@ -65,6 +69,7 @@ body{
     font-size: 36px;
     color:white;
     margin: 3px;
+    display: block;
 }
 
 .title2{
@@ -91,7 +96,7 @@ body{
     background: white;
     width: 22px;
     height: 22px;
-    margin:0 3px 0 3px;
+    margin:-3px 3px 0 3px;
     position: relative;
     vertical-align: middle;
     -webkit-border-radius: 22px 22px;
@@ -114,7 +119,7 @@ body{
 
 /*page sessions*/
 #sessions{
-    background-color: #cdff5f;
+    background-color: #ddffbf;
 }
 #back-des{
     color:black;
@@ -132,14 +137,14 @@ body{
 }
 
 #session-list:hover{
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #session-list li{
     height: 20px;
     line-height: 20px;
     margin-top: 1px;
-    background-color: #F4FF80;
+    background-color: #cdefaf;
     -webkit-user-drag:element;
 }
 
@@ -150,7 +155,7 @@ body{
 #session-list li.ex{
     height: auto;
     margin: 0 0 2px 0;
-    background-color: #E4EF70;
+    background-color: #bddf9f;
     -webkit-user-drag:none;
     display: none;
 }
@@ -188,10 +193,93 @@ body{
 
 /*page rules*/
 #rules{
-    -webkit-transform:translate3d(1180px,0,0);
+    -webkit-transform:translate3d(200px,0,0);
     -webkit-box-shadow: -3px 0 3px #6C9F00;
     background-color: #36D792;
     z-index:2;
+}
+
+#rules .title{
+    display: block;
+}
+
+#rules ul{
+    padding-top: 8px;
+    float:left;
+    height: 640px;
+    overflow: hidden;
+}
+
+#rules ul:hover{
+    overflow-y: auto;
+}
+#rules li{
+    height: 27px;
+    line-height: 27px;
+    margin-bottom: 1px;
+    background-color: #26C782;
+    white-space: nowrap;
+}
+
+#rules img{
+    width: 22px;
+    height: 22px;
+    margin: 3px;
+}
+
+#rules li.current{
+    background-color: #56F7B2;
+}
+
+#rules li.new{
+    background-color: #56F7B2;
+}
+
+#rules li.new img{
+    float:none;
+    margin-left:4px;
+}
+#rules li.new span{
+    vertical-align: top;
+}
+
+#group-list{
+    padding-left: 40px;
+    width: 220px;
+    -webkit-user-select:none;
+}
+
+#group-list li{
+    width:220px;
+}
+
+#group-list input{
+    height:22px;
+    line-height: 22px;
+    width: 150px;
+    border: none;
+    font-size: 16px;
+}
+
+#group-list img{
+    float:right;
+}
+
+#rule-list{
+    width:750px;
+    padding-left: 10px;
+}
+
+#rule-list li{
+    width: 750px;
+}
+
+#rule-list .type{
+    width: 65px;
+}
+#rule-list .arrow{
+    color:white;
+    padding:0 4px 0 4px;
 }
 
 /*page config*/

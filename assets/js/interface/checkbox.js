@@ -19,6 +19,7 @@ CheckBox.methods({
     bind: function(){
         var self = this;
         $(document.body).on('click','.checkbox',function(e){
+            e.stopPropagation();
             var target = $(e.target);
             var id = target.attr('id');
             var val = !target.hasClass('checkbox-on');

@@ -1,0 +1,7 @@
+<%for(var key in groups){
+    var group = groups[key];
+%>
+<li><div id="groupItem-<%=key%>" class="checkbox <%=(group.enable?'checkbox-on':'')%>"></div>
+<span><%=key%></span>
+</li>
+<%}%>

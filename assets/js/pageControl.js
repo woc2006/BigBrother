@@ -5,7 +5,7 @@ var pageRules = require('./pageRules');
 var pageSession = require('./pageSessions');
 
 var showPage = function(target,id){
-    var left = id == 'rules' ? 450: 800;
+    var left = id == 'rules' ? 200: 800;
     target.css('webkitTransform','translateX('+left+'px)').addClass('on');
 }
 
@@ -30,7 +30,7 @@ var bind = function(){
 exports.init = function(){
     bind();
     pageSession.init();
-    //pageRules.init();
+    pageRules.init();
     pageConfig.init();
 
 }
