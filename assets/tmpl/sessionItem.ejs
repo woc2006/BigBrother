@@ -1,5 +1,5 @@
-<li id="session-<%=id%>">
+<li id="session-<%=id%>" class="<%=(highlight?'highlight':'')%>">
     <span class="status"><%=status%></span>
-    <span class="host"><%=host%></span>
-    <span class="query"><%=query%></span>
+    <span class="host"><%=method%>:<%=host%></span>
+    <span class="query"><%=path%></span>
 </li>

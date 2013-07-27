@@ -33,6 +33,7 @@ body{
     -webkit-transition:-webkit-transform;
     -webkit-transition-duration: 500ms;
     -webkit-backface-visibility:hidden;
+    overflow: hidden;
 }
 
 .blod{
@@ -50,22 +51,13 @@ body{
     overflow: hidden;
 }
 
-#sessions{
-    background-color: #cdff5f;
+.container section{
+    height: 27px;
+    line-height: 27px;
 }
-
-#rules{
-    -webkit-transform:translate3d(1180px,0,0);
-    -webkit-box-shadow: -3px 0 3px #6C9F00;
-    background-color: #36D792;
-    z-index:2;
-}
-
-#config{
-    -webkit-transform: translate3d(1230px,0,0);
-    -webkit-box-shadow: -3px 0 3px #6C9F00;
-    background-color: #FFCD40;
-    z-index:4;
+.container span{
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .title{
@@ -75,29 +67,55 @@ body{
     margin: 3px;
 }
 
+.title2{
+    padding-left: 36px;
+    font-size: 28px;
+    color:white;
+    margin: 3px;
+}
+
+.title3{
+    font-size: 22px;
+    padding: 2px;
+}
+
+.title4{
+    font-size: 16px;
+    font-weight: bold;
+    padding:2px;
+}
+
 .checkbox{
     display: inline-block;
     border: 1px solid #DDD;
-    background: #CCC;
-    width: 80px;
-    height: 25px;
+    background: white;
+    width: 22px;
+    height: 22px;
+    margin:0 3px 0 3px;
     position: relative;
     vertical-align: middle;
-    margin:0;
+    -webkit-border-radius: 22px 22px;
 }
 
 .checkbox-on{
     background-color: #528CE0;
 }
-.checkboxBar{
-    margin:0;
-    position: absolute;
-    width: 40px;
-    height: 25px;
-    background-color: white;
+
+.colorpicker{
+    display: inline-block;
+    border: 1px solid #DDD;
+    background: white;
+    width: 22px;
+    height: 22px;
+    margin:0 3px 0 3px;
+    position: relative;
+    vertical-align: middle;
 }
 
 /*page sessions*/
+#sessions{
+    background-color: #cdff5f;
+}
 #back-des{
     color:black;
     font-size: 36px;
@@ -120,9 +138,32 @@ body{
 #session-list li{
     height: 20px;
     line-height: 20px;
-    margin-bottom: 1px;
+    margin-top: 1px;
     background-color: #F4FF80;
     -webkit-user-drag:element;
+}
+
+#session-list li.highlight{
+    background-color: #DAA;
+}
+
+#session-list li.ex{
+    height: auto;
+    margin: 0 0 2px 0;
+    background-color: #E4EF70;
+    -webkit-user-drag:none;
+    display: none;
+}
+#session-list dt{
+    width: 200px;
+    display: inline-block;
+    padding: 2px;
+    vertical-align: top;
+}
+
+#session-list dd{
+    display: inline-block;
+    width: 900px;
 }
 
 #session-list span{
@@ -138,17 +179,63 @@ body{
 }
 
 #session-list .host{
-    width: 180px;
+    width: 250px;
 }
 
 #session-list .query{
-    width:900px;
+    width:830px;
+}
+
+/*page rules*/
+#rules{
+    -webkit-transform:translate3d(1180px,0,0);
+    -webkit-box-shadow: -3px 0 3px #6C9F00;
+    background-color: #36D792;
+    z-index:2;
 }
 
 /*page config*/
-#config section{
-    height:27px;
-    line-height: 27px;
+#config{
+    -webkit-transform: translate3d(1230px,0,0);
+    -webkit-box-shadow: -3px 0 3px #6C9F00;
+    -webkit-user-select:none;
+    background-color: #FFCD40;
+    z-index:4;
+}
+
+.configItem{
+    width: 400px;
+    margin: 5px 0 0 40px;
+}
+
+.configHead{
+    text-align: center;
+    background-color: white;
+}
+
+/*  not ready for toggle
+.configHead:hover{
+    background-color: #CCC;
+}  */
+
+.configBody{
+    background-color: #EFBD30;
+}
+.configBody section{
+    display: inline;
+}
+
+.configBody span{
+    width:168px;
+}
+
+#style-picker{
+    position: absolute;
+    left:75px;
+    top:-50px;
+    border: 2px solid #EEE;
+    background-color: white;
+    display: none;
 }
 
 /*icons*/

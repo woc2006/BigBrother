@@ -26,4 +26,4 @@ exports.getElementPosition = function(el){
     }else{
         return {x:0,y:0};
     }
-}
+};

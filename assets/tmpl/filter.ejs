@@ -1,0 +1,6 @@
+<%for(var key in items){
+    var item = items[key],
+        on = item[prefix];
+    %>
+<section><div id="<%=prefix%>-<%=key%>" class="checkbox <%=(on?' checkbox-on':'')%>"></div><span><%=item.type%></span></section>
+<%}%>

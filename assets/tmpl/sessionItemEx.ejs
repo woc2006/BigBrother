@@ -1,0 +1,16 @@
+<li class="ex" id="sessionEx-<%=id%>">
+    <div class="title4">Request Headers</div>
+    <dl class="sub">
+        <%for(var key in requestHeader){%>
+        <dt><%=key%></dt>
+        <dd><%=requestHeader[key]%></dd>
+        <%}%>
+    </dl>
+    <div class="title4">Response Headers</div>
+    <dl class="sub">
+        <%for(var key in responseHeader){%>
+        <dt><%=key%></dt>
+        <dd><%=responseHeader[key]%></dd>
+        <%}%>
+    </dl>
+</li>
