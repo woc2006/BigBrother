@@ -25,7 +25,7 @@ CheckBox.methods({
             var val = !target.hasClass('checkbox-on');
             target[val?'addClass':'removeClass']('checkbox-on');
             for(var i=self.pool.length -1;i>=0;i--){
-                if(id.match(self.pool[i])){
+                if(id.match(self.pool[i].match)){
                     self.pool[i].callback(id, val);
                 }
             }

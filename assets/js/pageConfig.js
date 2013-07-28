@@ -73,21 +73,21 @@ exports.init = function(){
         }
         $('#config-style .configBody').html(html);
     });
-    CheckBox.on(/hide/,function(id,val){
+    CheckBox.on(/^hide-/,function(id,val){
         var id = id.match(/hide-(.+)/);
         if(id && id[1]){
             Config.updateConfig(id[1],'hide',val);
         }
     });
 
-    CheckBox.on(/highlight/,function(id,val){
+    CheckBox.on(/^highlight-/,function(id,val){
         var id = id.match(/highlight-(.+)/);
         if(id && id[1]){
             Config.updateConfig(id[1],'highlight',val);
         }
     });
 
-    CheckBox.on(/style/,function(id,val){
+    CheckBox.on(/^style-/,function(id,val){
         var id = id.match(/style-(.+)/);
         if(id && id[1]){
             Config.updateRuleStyle(id[1], val);

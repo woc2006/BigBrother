@@ -11,5 +11,6 @@
 		"max_height":720,
 		"position": "center"
 
-    }
+    },
+    "dom_storage_quota":50
 }

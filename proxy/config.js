@@ -1,4 +1,5 @@
 var $ = window.$;
+var LocalStorage = window.localStorage;
 
 var filterItems = {
     '200' : {
@@ -77,7 +78,8 @@ var getResourceType = function(path, type){
     }
 }
 
-exports.importFilter = function(raw){
+
+var importFilter = function(raw){
     var conf;
     try{
         conf = JSON.parse(raw);
@@ -87,7 +89,7 @@ exports.importFilter = function(raw){
     filterItems = $.extend(filterItems,conf);
 };
 
-exports.importStyle = function(raw){
+var importStyle = function(raw){
     var conf;
     try{
         conf = JSON.parse(raw);
@@ -97,17 +99,31 @@ exports.importStyle = function(raw){
     ruleStyle = $.extend(ruleStyle,conf);
 };
 
-exports.exportFilter = function(){
-    return JSON.stringify(filterItems);
+var saveFilter = function(){
+    var cache = JSON.stringify(filterItems);
+    try{
+        LocalStorage.setItem('config-filter',cache);
+    }catch(e){}
 };
 
-exports.exportStyle = function(){
-    return JSON.stringify(ruleStyle);
-}
+var saveStyle = function(){
+    var cache = JSON.stringify(ruleStyle);
+    try{
+        LocalStorage.setItem('config-style',cache);
+    }catch(e){}
+};
+
+exports.init = function(){
+    var cache = LocalStorage.getItem('config-filter');
+    importFilter(cache);
+    cache = LocalStorage.getItem('config-style');
+    importStyle(cache);
+};
 
 exports.updateConfig = function(id,type,val){
     if(!filterItems[id] || typeof filterItems[id][type] == 'undefined') return;
     filterItems[id][type] = !!val;
+    saveFilter();
 };
 
 exports.updateRuleStyle = function(type, val){
@@ -117,6 +133,7 @@ exports.updateRuleStyle = function(type, val){
     }else{
         ruleStyle[type] = val;
     }
+    saveStyle();
 }
 
 exports.getFilterItems = function(){

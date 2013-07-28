@@ -193,10 +193,11 @@ ul{
 
 /*page rules*/
 #rules{
-    -webkit-transform:translate3d(200px,0,0);
+    -webkit-transform:translate3d(1180px,0,0);
     -webkit-box-shadow: -3px 0 3px #6C9F00;
     background-color: #36D792;
     z-index:2;
+    -webkit-user-select:none;
 }
 
 #rules .title{
@@ -224,7 +225,7 @@ ul{
 #rules img{
     width: 22px;
     height: 22px;
-    margin: 3px;
+    margin: 3px 3px 3px 4px;
 }
 
 #rules li.current{
@@ -237,10 +238,21 @@ ul{
 
 #rules li.new img{
     float:none;
-    margin-left:4px;
 }
 #rules li.new span{
     vertical-align: top;
+}
+
+#rules #rule-edit{
+    height: auto;
+    background-color: #16B772;
+}
+
+#rules input{
+    height:22px;
+    line-height: 22px;
+    border: none;
+    font-size: 16px;
 }
 
 #group-list{
@@ -254,11 +266,7 @@ ul{
 }
 
 #group-list input{
-    height:22px;
-    line-height: 22px;
     width: 150px;
-    border: none;
-    font-size: 16px;
 }
 
 #group-list img{
@@ -282,6 +290,30 @@ ul{
     padding:0 4px 0 4px;
 }
 
+#rule-edit label{
+    display: inline-block;
+    width: 65px;
+    padding-left: 3px;
+}
+#rule-edit input{
+    width: 500px;
+}
+#rule-list .edit-button{
+    height: 27px;
+    padding-bottom: 3px;
+}
+
+#rule-list .edit-sub{
+    padding-left: 65px;
+}
+
+#rule-list .edit-sub label{
+    width:70px;
+}
+
+#rule-list .edit-sub input{
+    width: 100px;
+}
 /*page config*/
 #config{
     -webkit-transform: translate3d(1230px,0,0);
