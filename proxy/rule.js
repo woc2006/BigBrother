@@ -9,21 +9,11 @@ var groups = {
                 id:0,
                 enable:true,
                 type:'Replace',
-                source:'www.google.com',
-                dest:'/Users/woc2006/code/google'
-            },
-            {
-                id:1,
-                enable: false,
-                type:'Combo',
-                source:'http://gtimg.cn/c/=',
-                prefix:'/phone/',
-                separator:',',
-                dest:'/Users/woc2006/code/phone'
+                source:'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js',
+                dest:'E:\\a.js'
             }
         ]
     }
-
 };
 
 var importRule = function(raw){
@@ -34,6 +24,14 @@ var importRule = function(raw){
         return;
     }
     groups = $.extend(groups,conf);
+    //build all reg
+    for(var key in groups){
+        var _group = groups[key];
+        for(var i = 0, len = _group.rules.length; i<len; i++){
+            var _rule = _group.rules[i];
+            _rule.matchReg = buildMatchReg(_rule.source);
+        }
+    }
 };
 
 var saveRule = function(){
@@ -42,6 +40,11 @@ var saveRule = function(){
         LocalStorage.setItem('config-rule',cache);
     }catch(e){}
 };
+
+var buildMatchReg = function(source){
+    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'(.+)?';
+    return new RegExp(str);
+}
 
 exports.init = function(){
     var cache = LocalStorage.getItem('config-rule');
@@ -103,6 +106,7 @@ exports.updateRule = function(group, id, conf){
         }else{
             conf.id = _group.rules[len-1].id + 1;
         }
+        conf.matchReg = buildMatchReg(conf.source);
         _group.rules.push(conf);
         _id = conf.id;
     }else{
@@ -110,6 +114,10 @@ exports.updateRule = function(group, id, conf){
             if(_group.rules[i].id == id){
                 if(conf != null){
                     _group.rules[i] = $.extend(_group.rules[i],conf);
+                    if(conf.source){
+                        //reset match
+                        _group.rules[i].matchReg = buildMatchReg(_group.rules[i].source);
+                    }
                 }else{
                     _group.rules.splice(i,1);
                 }
@@ -141,4 +149,16 @@ exports.getRule = function(group, id){
         }
     }
     return null;
-}
+};
+
+exports.matchRule = function(url){
+    for(var key in groups){
+        var _group = groups[key];
+        if(!_group.enable) continue;
+        for(var i = 0, len = _group.rules.length; i<len; i++){
+            var _rule = _group.rules[i];
+            if(!_rule.enable) continue;
+
+        }
+    }
+};
