@@ -1,55 +1,23 @@
 var request = require('./request').request;
 var Buffer = require('buffer').Buffer;
-var Session = require('../assets/js/pageSessions');
-var Config = require('./config');
-
-var sendRequest = function(conf){
-    request(conf);
-};
-
-var buildCacheSession = function(req, res){
-    var item = {
-        status: res.statusCode || 500,
-        host: req._parsedUrl.hostname,
-        path: req._parsedUrl.pathname,
-        method: req.method,
-        requestHeader: req.headers,
-        responseHeader: res.headers || {}
-    };
-    return Config.applyFilter(item);
-};
+var Rules = require('./rule');
+var ProcessRequest = require('./request');
+var ProcessReplace = require('./replace');
+var ProcessCombo = require('./combo');
 
 exports.process = function(req, res){
-    var conf = {
-        host: req._parsedUrl.hostname,
-        path: req._parsedUrl.pathname,
-        method: req.method,
-        headers: req.headers,
-        callback: function(resp){
-            if(resp.error){
-                res.writeHead(500,resp.error);
-                res.end();
-            }else{
-                res.writeHead(resp.res.statusCode, resp.res.headers);
-                res.write(resp.content);
-                res.end();
-            }
-            setTimeout(function(){
-                Session.addSession(buildCacheSession(req, resp.res || {}));
-            },0);
-        }
-    };
-    if(req.method === 'POST'){
-        var buffer = [];
-        req.on('data',function(chunk){
-            buffer.push(chunk);
-        });
+   var url = req._parsedUrl.hostname + req._parsedUrl.pathname;
 
-        req.on('end',function(chunk){
-            conf.data = Buffer.concat(buffer);
-            sendRequest(conf);
-        });
-    }else{
-        sendRequest(conf);
-    }
+   var urls = Rules.matchRule(url);
+   if(!urls || !urls.length){
+       ProcessRequest.process(req, res);
+   }else if(urls.length == 1){
+       if(!ProcessReplace.process(req, res, urls[0])){
+           ProcessRequest.process(req, res);
+       }
+   }else{
+       if(!ProcessCombo.process(req, res, urls)){
+           ProcessCombo.process(req, res);
+       }
+   }
 };

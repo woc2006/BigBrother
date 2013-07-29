@@ -1,8 +1,9 @@
 var http = require('http');
 var Buffer = require('buffer').Buffer;
+var sessionBridge = require('./sessionBridge');
 
 
-exports.request = function(conf){
+var sendRequest = function(conf){
     var request = http.request({
         host: conf.host,
         port: 80,
@@ -44,4 +45,41 @@ exports.request = function(conf){
     });
 
     request.end();
-}
+};
+
+
+exports.process = function(req, res){
+    var conf = {
+        host: req._parsedUrl.hostname,
+        path: req._parsedUrl.pathname,
+        method: req.method,
+        headers: req.headers,
+        callback: function(resp){
+            if(resp.error){
+                res.writeHead(500,resp.error);
+                res.end();
+            }else{
+                res.writeHead(resp.res.statusCode, resp.res.headers);
+                res.write(resp.content);
+                res.end();
+            }
+            setTimeout(function(){
+                sessionBridge.addSession(req, resp.res || {});
+            },0);
+        }
+    };
+    if(req.method === 'POST'){
+        var buffer = [];
+        req.on('data',function(chunk){
+            buffer.push(chunk);
+        });
+
+        req.on('end',function(chunk){
+            conf.data = Buffer.concat(buffer);
+            sendRequest(conf);
+        });
+    }else{
+        sendRequest(conf);
+    }
+    return true;
+};

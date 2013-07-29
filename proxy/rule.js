@@ -4,15 +4,7 @@ var LocalStorage = window.localStorage;
 var groups = {
     'Default':{
         enable: true,
-        rules: [
-            {
-                id:0,
-                enable:true,
-                type:'Replace',
-                source:'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js',
-                dest:'E:\\a.js'
-            }
-        ]
+        rules: []
     }
 };
 
@@ -41,8 +33,13 @@ var saveRule = function(){
     }catch(e){}
 };
 
+/**
+ * See tests/rule.html for example
+ * @param source
+ * @returns {RegExp}
+ */
 var buildMatchReg = function(source){
-    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'(.+)?';
+    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?]+)?(\\?.*)?';
     return new RegExp(str);
 }
 
@@ -151,6 +148,7 @@ exports.getRule = function(group, id){
     return null;
 };
 
+//TODO: need cache for fast reference
 exports.matchRule = function(url){
     for(var key in groups){
         var _group = groups[key];
@@ -158,7 +156,22 @@ exports.matchRule = function(url){
         for(var i = 0, len = _group.rules.length; i<len; i++){
             var _rule = _group.rules[i];
             if(!_rule.enable) continue;
-
+            if(!_rule.matchReg) continue;
+            var match = _rule.matchReg.exec(url);
+            if(!match) continue;
+            var result = [];
+            if(!match[1]){
+                result.push(_rule.dest);
+            }else if(_rule.type == 'Replace'){
+                result.push(_rule.dest + match[1]);
+            }else{
+                var arr = match[1].split(_rule.separator);
+                for(var i= 0,len = arr.length;i<len;i++){
+                    result.push(_rule.dest + arr[i].replace(_rule.prefix,''));
+                }
+            }
+            return result;
         }
     }
+    return null;
 };
