@@ -175,11 +175,11 @@ var ruleInit = function(){
     ruleList.on('click','img',function(e){
         e.stopPropagation();
         var target = $(this).parent().parent();//li
+        var prev = target.prev();//maybe li.current
         var id = $(e.target).attr('id');
         removeEditor(target);
         if(id == 'edit-ok'){
             var conf = getEditResult(target);
-            var prev = target.prev();
             if(!prev.length || !prev.hasClass('current')){
                 //new rule
                 var id = Config.updateRule(currentGroup,null,conf);
@@ -197,7 +197,7 @@ var ruleInit = function(){
                 if(!id) return;
                 id = regRule.exec(id)[1];
                 conf.id = id;
-                Config.updateRule(currentGroup,id,conf);
+                conf = Config.updateRule(currentGroup,id,conf);
                 ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
                     if(err){
                         console.log('render error');
@@ -208,7 +208,15 @@ var ruleInit = function(){
                 });
             }
         }else if(id == 'edit-cancel'){
-            ruleList.children('.current').removeClass('current');
+            if(prev.length && prev.hasClass('current')){
+                var id = prev.children('.checkbox').attr('id');
+                if(!id) return;
+                id = regRule.exec(id)[1];
+                Config.updateRule(currentGroup,id, null);
+                prev.slideUp(300).promise().done(function(){
+                    prev.remove();
+                });
+            }
         }
     });
 

@@ -39,7 +39,7 @@ var saveRule = function(){
  * @returns {RegExp}
  */
 var buildMatchReg = function(source){
-    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?]+)?(\\?.*)?';
+    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?#]+)?([\\?#].*)?';
     return new RegExp(str);
 }
 
@@ -90,12 +90,12 @@ exports.updateGroup = function(group, newGroup, enable){
  * @param group
  * @param id
  * @param conf
- * @returns {Number} modified rule id, null for fail
+ * @returns {Object}
  */
 exports.updateRule = function(group, id, conf){
     if(!groups[group]) return null;
     var _group = groups[group], len = _group.rules.length;
-    var _id;
+    var _rule = null;
     if(id == null && conf != null){
         //add new rule
         if(len == 0){
@@ -103,9 +103,10 @@ exports.updateRule = function(group, id, conf){
         }else{
             conf.id = _group.rules[len-1].id + 1;
         }
+        conf.enable = true; //turn on by default
         conf.matchReg = buildMatchReg(conf.source);
         _group.rules.push(conf);
-        _id = conf.id;
+        _rule = conf;
     }else{
         for(var i=0;i<len;i++){
             if(_group.rules[i].id == id){
@@ -115,10 +116,10 @@ exports.updateRule = function(group, id, conf){
                         //reset match
                         _group.rules[i].matchReg = buildMatchReg(_group.rules[i].source);
                     }
+                    _rule = _group.rules[i];
                 }else{
                     _group.rules.splice(i,1);
                 }
-                _id = id;
                 break;
             }
         }
@@ -126,7 +127,7 @@ exports.updateRule = function(group, id, conf){
     setTimeout(function(){
         saveRule();
     },0);
-    return _id;
+    return _rule;
 };
 
 exports.getGroups = function(){

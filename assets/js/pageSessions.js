@@ -1,14 +1,14 @@
 var $ = window.$;
 var ejs = require('ejs');
-var Config = require('../../proxy/config').getFilterItems();
+var Style = require('../../proxy/config').getRuleStyle();
 
 var container = $('#session-list');
 var first = true;
 var sessionId = 0;
 var maxCache = 200;
 var currentDisplayed = 0;
-var cached = new Array(maxCache*2);
-var cachedEx = new Array(20);
+var cached = [];
+var cachedEx = [];
 
 var processFirst = function(){
     $('#back-des').hide();
@@ -25,16 +25,14 @@ var cache = function(session){
     cached.push(session);
 }
 
-exports.addSession = function(session){
+exports.addSession = function(session, match){
     if(!session || !session.status){
         return;
     }
-    //hide
     if(session.hide) return;
-    //match
     session.id = sessionId++;
     cache(session);
-    ejs.renderFile('assets/tmpl/sessionItem.ejs',session,function(err,html){
+    ejs.renderFile('assets/tmpl/sessionItem.ejs',{session: session, match: match? Style : null},function(err,html){
         container.append(html);
         currentDisplayed++;
         if(currentDisplayed > maxCache){
@@ -74,7 +72,8 @@ exports.init = function(){
                 //cache the node, and remove old items.
                 cachedEx.push(targetEx);
                 if(cachedEx.length > 20){
-                    cachedEx.shift().remove();
+                    var old = cachedEx.shift();
+                    if(old) old.remove();
                 }
             });
         }else{

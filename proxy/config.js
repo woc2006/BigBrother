@@ -127,7 +127,7 @@ exports.updateConfig = function(id,type,val){
 };
 
 exports.updateRuleStyle = function(type, val){
-    if(!ruleStyle[type]) return;
+    if(typeof ruleStyle[type] == 'undefined') return;
     if(type != 'color'){
         ruleStyle[type] = !!val;
     }else{

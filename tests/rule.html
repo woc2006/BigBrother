@@ -30,6 +30,12 @@
         deepEqual(result2[1], undefined);
         deepEqual(result2[2],'?v=12345');
 
+        test2 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js#v=12345';
+        result2 = output.exec(test2);
+        equal(result2.length, 3);
+        deepEqual(result2[1], undefined);
+        deepEqual(result2[2],'#v=12345');
+
         var test3 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest';
         var result3 = output.exec(test3);
         deepEqual(result3,null);
@@ -65,6 +71,12 @@
         deepEqual(result2[1],'manifest.js');
         deepEqual(result2[2],'?v=12345');
 
+        test2 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js#v=12345';
+        result2 = output.exec(test2);
+        equal(result2.length, 3);
+        deepEqual(result2[1],'manifest.js');
+        deepEqual(result2[2],'#v=12345');
+
         var test3 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4';
         var result3 = output.exec(test3);
         deepEqual(result3,null);
@@ -91,11 +103,17 @@
         deepEqual(result3[1],'phone/m/v4');
         deepEqual(result3[2],undefined);
 
-        var test3 = 'http://qzonestyle.gtimg.cn/qzone/version?v=12345';
-        var result3 = output.exec(test3);
+        test3 = 'http://qzonestyle.gtimg.cn/qzone/version?v=12345';
+        result3 = output.exec(test3);
         equal(result3.length,3);
         deepEqual(result3[1],'version');
         deepEqual(result3[2],'?v=12345');
+
+        test3 = 'http://qzonestyle.gtimg.cn/qzone/version#v=12345';
+        result3 = output.exec(test3);
+        equal(result3.length,3);
+        deepEqual(result3[1],'version');
+        deepEqual(result3[2],'#v=12345');
     });
 
     test('combo reg build',function(){

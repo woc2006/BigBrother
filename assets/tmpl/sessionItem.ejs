@@ -1,5 +1,15 @@
-<li id="session-<%=id%>" class="<%=(highlight?'highlight':'')%>">
-    <span class="status"><%=status%></span>
-    <span class="host"><%=method%>:<%=host%></span>
-    <span class="query"><%=path%></span>
+<%
+    var cls = "", style = "";
+    if(match){
+        if(match.bold) cls += " bold";
+        if(match.italic) cls+= " italic";
+        style="color:"+match.color;
+    }
+    var _method = session.method == "POST"? "POST:": "";
+%>
+
+<li id="session-<%=session.id%>" class="<%=(session.highlight?'highlight':'')%>">
+    <span class="status"><%=session.status%></span>
+    <span class="host<%=cls%>" style="<%=style%>"><%=_method%><%=session.host%></span>
+    <span class="query<%=cls%>" style="<%=style%>"><%=session.path%></span>
 </li>
