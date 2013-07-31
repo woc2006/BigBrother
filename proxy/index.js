@@ -1,7 +1,9 @@
 var Rules = require('./rule');
-var ProcessRequest = require('./request');
-var ProcessReplace = require('./replace');
-var ProcessCombo = require('./combo');
+var ProcessRequest = require('./route/request');
+var ProcessReplace = require('./route/replace');
+var ProcessCombo = require('./route/combo');
+var ResponseItem = require('./responseItem').ResponseItem;
+var RequestItem = require('./requestItem').RequestItem;
 
 exports.process = function(req, res){
     req._parsedUrl.hostname = req._parsedUrl.hostname || '127.0.0.1';
@@ -9,12 +11,26 @@ exports.process = function(req, res){
     req._parsedUrl.protocol = req._parsedUrl.protocol || 'http:'
     var url = req._parsedUrl.protocol + '//' + req._parsedUrl.hostname + req._parsedUrl.pathname;
 
-    var urls = Rules.matchRule(url);
-    if(!urls || !urls.length){
-        ProcessRequest.process(req, res);
-    }else if(urls.length == 1){
-        ProcessReplace.process(req, res, urls[0]);
-    }else{
-        ProcessCombo.process(req, res, urls);
-    }
+    var matched = Rules.matchRule(url);
+    var reqItem = new RequestItem(req, res, matched, function(_req, _res, _matched){
+        var resItem = new ResponseItem(_res, _matched);
+        if(!_matched || !_matched.files.length){
+            ProcessRequest.process(_req, resItem);
+            return;
+        }
+        switch (_matched.meta.type){
+            case 'Host':
+                _req._parsedUrl.hostname = _matched.files[0];
+                ProcessRequest.process(_req, resItem);
+                break;
+            case 'Combo':
+                ProcessCombo.process(_req, resItem, _matched.files);
+                break;
+            default:
+                ProcessReplace.process(_req, resItem, _matched.files[0]);
+                break;
+        }
+    })
+
+
 };

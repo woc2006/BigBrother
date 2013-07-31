@@ -227,8 +227,8 @@ var ruleInit = function(){
             target.find('#edit-combo-sub').slideDown(300);
             var offset = target.offset();
             Tips.showTips('combo',{
-                top: offset.top - 64,
-                left:offset.left + 68
+                top: offset.top + 26,
+                left:offset.left + 264
             });
         }else{
             target.find('#edit-combo-sub').slideUp(300);

@@ -11,7 +11,7 @@ var importTips = function(raw){
     }catch(e){
         return;
     }
-    tips = conf;
+    tips = conf || {};
 };
 
 var saveTips = function(){
@@ -26,7 +26,7 @@ exports.init = function(){
     importTips(cache);
 
     $('#tips').on('click','.tips',function(e){
-        $(this).hide();
+        $(this).fadeOut(300);
     });
 };
 
@@ -50,13 +50,13 @@ exports.showTips = function(key, conf){
         top: conf.top + 'px',
         left: conf.left + 'px'
     }).fadeIn(300);
-    setTimeout(function(){
+    /*setTimeout(function(){
         if(current){
             current.fadeOut(300);
             current = null;
         }
-    },3000);
+    },5000);*/
     setTimeout(function(){
         saveTips();
-    });
+    },0);
 };

@@ -9,6 +9,8 @@ var groups = {
     }
 };
 
+var hostReg = /^\d+\.\d+\.\d+\.\d+$/;
+
 var importRule = function(raw){
     var conf;
     try{
@@ -42,6 +44,16 @@ var saveRule = function(){
 var buildMatchReg = function(source){
     var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?#]+)?([\\?#].*)?';
     return new RegExp(str);
+};
+
+var processConf = function(conf){
+    conf.source = conf.source.trim();
+    conf.dest = conf.dest.trim();
+    conf.matchReg = buildMatchReg(conf.source);
+    if(hostReg.exec(conf.dest)){
+        conf.type = 'Host';
+    }
+    return conf;
 }
 
 exports.init = function(){
@@ -105,18 +117,15 @@ exports.updateRule = function(group, id, conf){
             conf.id = _group.rules[len-1].id + 1;
         }
         conf.enable = true; //turn on by default
-        conf.matchReg = buildMatchReg(conf.source);
+        conf = processConf(conf);
         _group.rules.push(conf);
         _rule = conf;
     }else{
         for(var i=0;i<len;i++){
             if(_group.rules[i].id == id){
                 if(conf != null){
-                    _group.rules[i] = $.extend(_group.rules[i],conf);
-                    if(conf.source){
-                        //reset match
-                        _group.rules[i].matchReg = buildMatchReg(_group.rules[i].source);
-                    }
+                    _group.rules[i] = processConf($.extend(_group.rules[i],conf));
+
                     _rule = _group.rules[i];
                 }else{
                     _group.rules.splice(i,1);
@@ -161,18 +170,23 @@ exports.matchRule = function(url){
             if(!_rule.matchReg) continue;
             var match = _rule.matchReg.exec(url);
             if(!match) continue;
-            var result = [];
+            var resultArr = [];
             if(!match[1]){
-                result.push(_rule.dest);
+                resultArr.push(_rule.dest);
+            }else if(_rule.type == 'Host'){
+                resultArr.push(_rule.dest);
             }else if(_rule.type == 'Replace'){
-                result.push((_rule.dest + match[1]).replace(/\//g,path.sep));
+                resultArr.push((_rule.dest + match[1]).replace(/\//g,path.sep));
             }else{
                 var arr = match[1].split(_rule.separator);
                 for(var i= 0,len = arr.length;i<len;i++){
-                    result.push((_rule.dest + arr[i].replace(_rule.prefix,'')).replace(/\//g, path.sep));
+                    resultArr.push((_rule.dest + arr[i].replace(_rule.prefix,'')).replace(/\//g, path.sep));
                 }
             }
-            return result;
+            return {
+                files: resultArr,
+                meta: _rule
+            };
         }
     }
     return null;

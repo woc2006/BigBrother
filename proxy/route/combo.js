@@ -1,6 +1,6 @@
 var fs = require('fs');
 var mime = require('mime');
-var sessionBridge = require('./sessionBridge');
+var sessionBridge = require('./../sessionBridge');
 var ProcessRequest = require('./request');
 
 
@@ -23,11 +23,10 @@ exports.process = function(req, res, files){
                     ProcessRequest.process(req, res);  //route to network
                 }else{
                     var result = buffers.join('\r\n');
-                    res.statusCode = 200;
+                    res.setStatus(200);
                     res.setHeader('Content-Length', result.length);
                     res.setHeader('Content-Type', mime.lookup(file));
-                    res.write(result);
-                    res.end();
+                    res.end(result);
                     setTimeout(function(){
                         sessionBridge.addSession(req, res, true);
                     },0);

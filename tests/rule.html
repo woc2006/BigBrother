@@ -11,6 +11,7 @@
 
 <script type="text/javascript">
     exports = {};
+    require = function(){};
 </script>
 <script type="text/javascript" src="../proxy/rule.js"></script>
 <script type="text/javascript">
@@ -131,6 +132,17 @@
         equal(result2.length, 3);
         deepEqual(result2[1],'manifest.js,lib.js,zepto.js,/module/main.js');
         deepEqual(result2[2], '?v=12345');
+    });
+
+    test('host reg build',function(){
+        var input  = 'qzonestyle.gtimg.cn';
+        var output = buildMatchReg(input);
+
+        var test1 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js';
+        var result1 = output.exec(test1);
+        equal(result1.length, 3);
+        deepEqual(result1[1],'/qzone/phone/m/v4/manifest.js');
+        deepEqual(result1[2],undefined);
     });
 </script>
 </body>

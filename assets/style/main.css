@@ -366,10 +366,17 @@ ul{
     position: absolute;
     z-index: 100;
     display: none;
+    cursor: pointer;
 }
 
 #tips-combo b{
     color:#FF2222;
+}
+
+#tips .tipsContinue{
+    text-align: center;
+    color:#777;
+    text-decoration: underline;
 }
 
 /*icons*/

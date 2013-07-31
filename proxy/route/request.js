@@ -1,6 +1,6 @@
 var http = require('http');
 var Buffer = require('buffer').Buffer;
-var sessionBridge = require('./sessionBridge');
+var sessionBridge = require('./../sessionBridge');
 
 
 var sendRequest = function(conf){
@@ -60,8 +60,7 @@ exports.process = function(req, res){
                 res.end();
             }else{
                 res.writeHead(resp.res.statusCode, resp.res.headers);
-                res.write(resp.content);
-                res.end();
+                res.end(resp.content);
             }
             setTimeout(function(){
                 sessionBridge.addSession(req, resp.res || {});
