@@ -358,6 +358,20 @@ ul{
     display: none;
 }
 
+/*tips*/
+.tips{
+    border: 1px solid #BBB;
+    background-color: white;
+    padding:4px 12px;
+    position: absolute;
+    z-index: 100;
+    display: none;
+}
+
+#tips-combo b{
+    color:#FF2222;
+}
+
 /*icons*/
 .icon{
     width:36px;

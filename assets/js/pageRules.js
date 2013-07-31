@@ -1,6 +1,7 @@
 var $ = window.$
 var ejs = require('ejs');
 var Config = require('../../proxy/rule');
+var Tips = require('./tipsControl');
 var CheckBox = require('./interface/checkbox').CheckBox.getInstance();
 
 var groupList = $('#group-list');
@@ -224,6 +225,11 @@ var ruleInit = function(){
         if(!target.length) return;
         if(val){
             target.find('#edit-combo-sub').slideDown(300);
+            var offset = target.offset();
+            Tips.showTips('combo',{
+                top: offset.top - 64,
+                left:offset.left + 68
+            });
         }else{
             target.find('#edit-combo-sub').slideUp(300);
         }
