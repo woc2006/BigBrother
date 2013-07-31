@@ -182,8 +182,7 @@ var ruleInit = function(){
             var conf = getEditResult(target);
             if(!prev.length || !prev.hasClass('current')){
                 //new rule
-                var id = Config.updateRule(currentGroup,null,conf);
-                conf.id = id;   //as updateRule already append id to conf, confirm again.
+                var conf = Config.updateRule(currentGroup,null,conf);
                 ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
                     if(err){
                         console.log('render error');

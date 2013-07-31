@@ -6,7 +6,8 @@ var ProcessCombo = require('./combo');
 exports.process = function(req, res){
     req._parsedUrl.hostname = req._parsedUrl.hostname || '127.0.0.1';
     req._parsedUrl.pathname = req._parsedUrl.pathname || '/';
-    var url = req._parsedUrl.hostname + req._parsedUrl.pathname;
+    req._parsedUrl.protocol = req._parsedUrl.protocol || 'http:'
+    var url = req._parsedUrl.protocol + '//' + req._parsedUrl.hostname + req._parsedUrl.pathname;
 
     var urls = Rules.matchRule(url);
     if(!urls || !urls.length){

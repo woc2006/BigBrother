@@ -1,5 +1,6 @@
 var $ = window.$;
 var LocalStorage = window.localStorage;
+var path = require('path');
 
 var groups = {
     'Default':{
@@ -164,11 +165,11 @@ exports.matchRule = function(url){
             if(!match[1]){
                 result.push(_rule.dest);
             }else if(_rule.type == 'Replace'){
-                result.push(_rule.dest + match[1]);
+                result.push((_rule.dest + match[1]).replace(/\//g,path.sep));
             }else{
                 var arr = match[1].split(_rule.separator);
                 for(var i= 0,len = arr.length;i<len;i++){
-                    result.push(_rule.dest + arr[i].replace(_rule.prefix,''));
+                    result.push((_rule.dest + arr[i].replace(_rule.prefix,'')).replace(/\//g, path.sep));
                 }
             }
             return result;
