@@ -9,9 +9,11 @@ exports.process = function(req, res, file){
     fs.stat(file, function(err, stat){
         if(err || !stat){
             ProcessRequest.process(req, res);
+            return;
         }
         if(!stat.isFile()){
             ProcessRequest.process(req, res);
+            return;
         }
         fs.readFile(file, function(err, data){
             if(err){
@@ -23,9 +25,7 @@ exports.process = function(req, res, file){
             res.setHeader('Content-Type', mime.lookup(file));
             res.end(data);
 
-            setTimeout(function(){
-                sessionBridge.addSession(req, res, true);
-            },0);
+            sessionBridge.addSession(req, res, true);
         });
     });
 }

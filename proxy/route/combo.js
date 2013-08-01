@@ -27,9 +27,7 @@ exports.process = function(req, res, files){
                     res.setHeader('Content-Length', result.length);
                     res.setHeader('Content-Type', mime.lookup(file));
                     res.end(result);
-                    setTimeout(function(){
-                        sessionBridge.addSession(req, res, true);
-                    },0);
+                    sessionBridge.addSession(req, res, true);
                 }
             }
         }

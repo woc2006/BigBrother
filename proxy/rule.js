@@ -171,7 +171,7 @@ exports.matchRule = function(url){
             var match = _rule.matchReg.exec(url);
             if(!match) continue;
             var resultArr = [];
-            if(!match[1]){
+            if(!match[1] || match[1] == '/' || match[1] == '\\'){
                 resultArr.push(_rule.dest);
             }else if(_rule.type == 'Host'){
                 resultArr.push(_rule.dest);

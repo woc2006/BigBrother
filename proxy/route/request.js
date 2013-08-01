@@ -62,9 +62,7 @@ exports.process = function(req, res){
                 res.writeHead(resp.res.statusCode, resp.res.headers);
                 res.end(resp.content);
             }
-            setTimeout(function(){
-                sessionBridge.addSession(req, resp.res || {});
-            },0);
+            sessionBridge.addSession(req, resp.res || {});
         }
     };
     if(req.method === 'POST'){
