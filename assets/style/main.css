@@ -34,7 +34,7 @@ ul{
 }
 /*public class*/
 .animate{
-    -webkit-transition:-webkit-transform height;
+    -webkit-transition:-webkit-transform;
     -webkit-transition-duration: 500ms;
     -webkit-backface-visibility:hidden;
     overflow: hidden;
@@ -220,7 +220,7 @@ ul{
     margin-bottom: 1px;
     background-color: #26C782;
     white-space: nowrap;
-    -webkit-user-drag:element;
+    position: relative;
 }
 
 #rules img{
@@ -289,6 +289,18 @@ ul{
 #rule-list .arrow{
     color:white;
     padding:0 4px 0 4px;
+}
+
+#rule-list .ruleItem-tool{
+    position: absolute;
+    top:0px;
+    right:0px;
+    height:27px;
+    -webkit-transform:translateX(130px);
+}
+
+#rule-list .ruleItem-tool-hover{
+    -webkit-transform:translateX(0);
 }
 
 #rule-edit label{

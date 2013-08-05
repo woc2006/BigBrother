@@ -111,11 +111,13 @@ exports.updateRule = function(group, id, conf){
     var _rule = null;
     if(id == null && conf != null){
         //add new rule
-        if(len == 0){
-            conf.id = 0;
-        }else{
-            conf.id = _group.rules[len-1].id + 1;
+        conf.id = 0;
+        for(var i=0;i<len;i++){
+            if(_group.rules[i].id > conf.id){
+                conf.id = _group.rules[i].id;
+            }
         }
+        conf.id++;
         conf.enable = true; //turn on by default
         conf = processConf(conf);
         _group.rules.push(conf);
@@ -138,6 +140,38 @@ exports.updateRule = function(group, id, conf){
         saveRule();
     },0);
     return _rule;
+};
+
+/**
+ *
+ * @param group
+ * @param id  move this rule
+ * @param refId  based on this rule
+ * @param delta
+ * @return {Boolean} move success or fail
+ */
+exports.changeRuleOrder = function(group, id, refId, delta){
+    if(!groups[group]) return false;
+    var rules = groups[group].rules, len = rules.length;
+    var pos = -1, refPos = -1;
+    for(var i=0;i<len;i++){
+        var rule = rules[i];
+        if(rule.id == id){
+            pos = i;
+        }
+        if(rule.id == refId){
+            refPos = i;
+        }
+    }
+    if(pos == -1) return false;
+    if(refPos == -1){
+        refPos = pos;
+    }
+    refPos = refPos + delta;
+    if(refPos < 0 || refPos >= len) return false;
+    var del = rules.splice(pos,1);
+    rules.splice(refPos, 0, del[0]);
+    return true;
 };
 
 exports.getGroups = function(){

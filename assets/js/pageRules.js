@@ -38,6 +38,20 @@ var getEditResult = function(target){
     return conf;
 };
 
+/**
+ *
+ * @param target #rule-list li
+ */
+var getTargetId = function(target, isGroup){
+    var id = target.children('.checkbox').attr('id');
+    if(!id) return '';
+    if(isGroup){
+        return regGroup.exec(id)[1];  //id should be well formated
+    }else{
+        return regRule.exec(id)[1];
+    }
+}
+
 var groupInit = function(){
     groupList.on('click','li',function(e){
         if(groupLock) return;
@@ -58,9 +72,7 @@ var groupInit = function(){
                 groupLock = true;
             });
         }else if(!target.hasClass('current')){
-            var id = target.children('.checkbox').attr('id');
-            if(!id) return;
-            currentGroup = regGroup.exec(id)[1]; //this is horrible
+            currentGroup = getTargetId(target, true);
             swapRules(true);
         }
     });
@@ -87,7 +99,7 @@ var groupInit = function(){
         e.stopPropagation();
         var target = $(this).parent();//li
         if(target.hasClass('new')) return;
-        if(!window.confirm("Do you wish to delete this group?")) return;
+        if(currentGroup && !window.confirm("Do you wish to delete this group?")) return;
         Config.updateGroup(currentGroup,null,null);
         //find next item
         currentGroup = '';
@@ -96,10 +108,11 @@ var groupInit = function(){
             next = target.next();
         }
         if(!next.hasClass('new')){
-            var id = next.children('.checkbox').attr('id');
-            currentGroup = id ? regGroup.exec(id)[1] : '';
+            currentGroup = getTargetId(next, true);
         }
-        target.remove();
+        target.slideUp().promise().done(function(){
+            target.remove();
+        });
         swapRules(true); //unlock in swap
     });
 
@@ -160,9 +173,8 @@ var ruleInit = function(){
                 newItem.slideDown(300);
             });
         }else{
-            var id = target.children('.checkbox').attr('id');
+            var id = getTargetId(target);
             if(!id) return;
-            id = regRule.exec(id)[1];
             var conf = Config.getRule(currentGroup,id);
             if(!conf) return;
             target.addClass('current');
@@ -178,6 +190,18 @@ var ruleInit = function(){
         }
     });
 
+    ruleList.on('mouseenter','li',function(e){
+        if($('#rule-edit').length) return;
+        var target = $(this);
+        ruleList.find('.ruleItem-tool-hover').removeClass('ruleItem-tool-hover');
+        if(target.hasClass('new')) return;
+        target.find('.ruleItem-tool').addClass('ruleItem-tool-hover');
+    });
+
+    ruleList.on('mouseleave','li',function(e){
+        ruleList.find('.ruleItem-tool-hover').removeClass('ruleItem-tool-hover');
+    });
+
     ruleList.on('dblclick','input',function(e){
         var target = $(this),
             id = target.attr('id');
@@ -190,51 +214,81 @@ var ruleInit = function(){
         e.stopPropagation();
         var target = $(this).parent().parent();//li
         var prev = target.prev();//maybe li.current
-        var id = $(e.target).attr('id');
-        removeEditor(target);
-        if(id == 'edit-ok'){
-            var conf = getEditResult(target);
-            if(!conf.source){
-                $('#edit-source').focus();
-                return;
-            }
-            if(!prev.length || !prev.hasClass('current')){
-                //new rule
-                var conf = Config.updateRule(currentGroup,null,conf);
-                ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
+        var tool = $(this).data('tool');
+        switch (tool){
+            case 'ok':
+                removeEditor();
+                var conf = getEditResult(target);
+                if(!conf.source){
+                    $('#edit-source').focus();
+                    return;
+                }
+                if(!prev.length || !prev.hasClass('current')){
+                    //new rule
+                    var conf = Config.updateRule(currentGroup,null,conf);
+                    ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
+                        if(err){
+                            console.log('render error');
+                            return;
+                        }
+                        var newItem = $(html);
+                        target.before(newItem);
+                    });
+                }else{
+                    var id = getTargetId(prev);
+                    if(!id) return;
+                    conf.id = id;
+                    conf = Config.updateRule(currentGroup,id,conf);
+                    ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
+                        if(err){
+                            console.log('render error');
+                            return;
+                        }
+                        var newItem = $(html);
+                        prev.replaceWith(newItem);
+                    });
+                }
+                break;
+            case 'cancel':
+                removeEditor();
+                if(prev.length && prev.hasClass('current')){
+                    prev.removeClass('current');
+                }
+                break;
+            case 'copy':
+                var id = getTargetId(target);
+                if(!id) return;
+                var conf = Config.getRule(currentGroup, id);
+                var newConf = Config.updateRule(currentGroup, null, $.extend({},conf));
+                var result = Config.changeRuleOrder(currentGroup, newConf.id, conf.id,1);  //should always be true
+                if(!result){
+                    Config.updateRule(currentGroup,newConf, null);  //delete it
+                    return;
+                }
+                ejs.renderFile('assets/tmpl/rule.ejs',{rules:[newConf]},function(err,html){
                     if(err){
                         console.log('render error');
                         return;
                     }
-                    var newItem = $(html);
-                    target.before(newItem);
+                    var newItem = $(html).hide();
+                    target.after(newItem);
+                    newItem.slideDown(300);
                 });
-            }else{
-                var id = prev.children('.checkbox').attr('id');
+                break;
+            case 'up':
+                break;
+            case 'down':
+                break;
+            case 'delete':
+                if(!window.confirm("Do you wish to delete this rule?")) return;
+                removeEditor();
+                var id = getTargetId(target);
                 if(!id) return;
-                id = regRule.exec(id)[1];
-                conf.id = id;
-                conf = Config.updateRule(currentGroup,id,conf);
-                ejs.renderFile('assets/tmpl/rule.ejs',{rules:[conf]},function(err,html){
-                    if(err){
-                        console.log('render error');
-                        return;
-                    }
-                    var newItem = $(html);
-                    prev.replaceWith(newItem);
-                });
-            }
-        }else if(id == 'edit-cancel'){
-            if(!window.confirm("Do you wish to delete this rule?")) return;
-            if(prev.length && prev.hasClass('current')){
-                var id = prev.children('.checkbox').attr('id');
-                if(!id) return;
-                id = regRule.exec(id)[1];
                 Config.updateRule(currentGroup,id, null);
-                prev.slideUp(300).promise().done(function(){
-                    prev.remove();
+                target.slideUp(300).promise().done(function(){
+                    target.remove();
                 });
-            }
+                break;
         }
     });
 
@@ -263,32 +317,6 @@ var ruleInit = function(){
     });
 };
 
-var dragInit = function(){
-    var currentDragging = null;
-    var startPos = null;
-    $('#rules').on('mousedown',function(e){
-        var target = $(this);
-        if(target.hasClass('new')) return;
-        if(target.hasClass('current')){
-            removeEditor();
-            target.removeClass('current');
-        }
-        currentDragging = target;
-        startPos = {
-            left: e.pageX,
-            top: e.pageY
-        };
-    });
-
-    $('#rules').on('mouseup',function(e){
-        debugger;
-        var endPos = {
-            left: e.pageX,
-            top: e.pageY
-        };
-
-    });
-}
 
 var swapRules = function(transition){
     groupLock = true;
@@ -360,5 +388,4 @@ exports.init = function(){
 
     groupInit();
     ruleInit();
-    //dragInit();
 };
