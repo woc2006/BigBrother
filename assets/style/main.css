@@ -274,6 +274,18 @@ ul{
     float:right;
 }
 
+#group-list .groupItem-tool{
+    position: absolute;
+    top:0;
+    right:0;
+    height:27px;
+    -webkit-transform: translateX(30px);
+}
+
+#group-list .groupItem-tool-hover{
+    -webkit-transform: translateX(0);
+}
+
 #rule-list{
     width:750px;
     padding-left: 10px;

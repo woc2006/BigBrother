@@ -50,7 +50,7 @@ var getTargetId = function(target, isGroup){
     }else{
         return regRule.exec(id)[1];
     }
-}
+};
 
 var groupInit = function(){
     groupList.on('click','li',function(e){
@@ -77,6 +77,19 @@ var groupInit = function(){
         }
     });
 
+    groupList.on('mouseenter','li',function(e){
+        var target = $(this);
+        groupList.find('.groupItem-tool-hover').removeClass('groupItem-tool-hover');
+        if(target.hasClass('new')) return;
+        if(target.children('span').text() == 'Default') return;
+        target.find('.groupItem-tool').addClass('groupItem-tool-hover');
+    });
+
+    groupList.on('mouseleave','li',function(e){
+        groupList.find('.groupItem-tool-hover').removeClass('groupItem-tool-hover');
+    });
+
+    //rename is not a frequently operation, use another trigger method.
     groupList.on('dblclick','li',function(e){
         if(groupLock) return;
         if($(e.target).hasClass('checkbox')) return;
@@ -97,7 +110,7 @@ var groupInit = function(){
 
     groupList.on('click','img',function(e){
         e.stopPropagation();
-        var target = $(this).parent();//li
+        var target = $(this).parent().parent();//li
         if(target.hasClass('new')) return;
         if(currentGroup && !window.confirm("Do you wish to delete this group?")) return;
         Config.updateGroup(currentGroup,null,null);
@@ -120,16 +133,28 @@ var groupInit = function(){
         var val = $.trim(target.val());
         if(!val) return;
         val = encodeURIComponent(val);
+        var _config;
         if(val != currentGroup){
-            if(!Config.updateGroup(currentGroup,val,null)) return;
+            _config = Config.updateGroup(currentGroup, val, null);
+            if(!_config) return;
         }
         currentGroup = val;
         var parent = target.parent();
+        var groups = {};
+        groups[val] = _config;
+        ejs.renderFile('assets/tmpl/group.ejs',{groups: groups},function(err,html){
+            if(err){
+                console.log('render error');
+                return;
+            }
+            var newItem = $(html);
+            parent.replaceWith(newItem);
+        });
         //modify the old one
-        target.remove();
+      /*  target.remove();
         parent.children('img').remove();
         parent.append('<span>'+val+'</span>');
-        parent.children('.checkbox').attr('id','groupItem-'+val);
+        parent.children('.checkbox').attr('id','groupItem-'+val);  */
         swapRules(true);   //unlock in swap
     };
 
@@ -276,8 +301,26 @@ var ruleInit = function(){
                 });
                 break;
             case 'up':
-                break;
             case 'down':
+                var id = getTargetId(target);
+                if(!id) return;
+                var flag = tool == 'up' ? -1 : 1;
+                var result = Config.changeRuleOrder(currentGroup,id,null,flag);
+                if(result){
+                    var another = flag == -1 ? target.prev() : target.next();
+                    target.addClass('animate').css('webkitTransform','translateY('+(28*flag)+'px)');
+                    another.addClass('animate').css('webkitTransform','translateY('+(-28*flag)+'px)');
+                    target.on('webkitTransitionEnd',function(){
+                        target.removeClass('animate').css('webkitTransform','');
+                        another.removeClass('animate').css('webkitTransform','');
+                        target.off('webkitTransitionEnd');
+                        if(flag == -1){
+                            target.after(another);
+                        }else{
+                            target.before(another);
+                        }
+                    });
+                }
                 break;
             case 'delete':
                 if(!window.confirm("Do you wish to delete this rule?")) return;

@@ -69,33 +69,37 @@ exports.init = function(){
  * @returns {boolean}
  */
 exports.updateGroup = function(group, newGroup, enable){
+    var _group = null;
     if(newGroup){
-        if(groups[newGroup]) return false; //already exist
+        if(groups[newGroup]) return null; //already exist
         if(group){
             //rename
             groups[newGroup] = groups[group];
             delete groups[group];
+            _group = groups[newGroup];
         }else{
             //new group
-            groups[newGroup] = {
+            _group = {
                 enable : true,
                 rules:[]
-            };
+            }
+            groups[newGroup] = _group;
         }
     }else{
-        if(!groups[group]) return false;
+        if(!groups[group]) return null;
         if(enable == null){
             //delete
-            if(group == 'Default') return false;
+            if(group == 'Default') return null;
             delete groups[group];
         }else{
             groups[group].enable = !!enable;
+            _group = groups[group];
         }
     }
     setTimeout(function(){
         saveRule();
     },0);
-    return true;
+    return _group;
 };
 
 /**
@@ -171,6 +175,9 @@ exports.changeRuleOrder = function(group, id, refId, delta){
     if(refPos < 0 || refPos >= len) return false;
     var del = rules.splice(pos,1);
     rules.splice(refPos, 0, del[0]);
+    setTimeout(function(){
+        saveRule();
+    },0);
     return true;
 };
 
