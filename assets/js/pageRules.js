@@ -22,18 +22,30 @@ var removeEditor = function(target){
     });
 };
 
+//entrance of all rules creation
 var getEditResult = function(target){
     target = target || $('#rule-edit');
     var conf = {
-        source: target.find('#edit-source').val().trim(),
-        dest: target.find('#edit-dest').val().trim(),
-        type: target.find('#edit-combo').hasClass('checkbox-on')? 'Combo':'Replace',
+        source: $('#edit-source').val().trim(),
+        dest: $('#edit-dest').val().trim(),
+        type: $('#edit-combo').hasClass('checkbox-on')? 'Combo':'Replace',
         prefix:'',
-        separator:''
+        separator:'',
+        additional: 0,
+        speed: ~~parseInt($('#edit-speed').val().trim())
     };
     if(conf.type == 'Combo'){
-        conf.prefix = target.find('#edit-prefix').val().trim();
-        conf.separator = target.find('#edit-separator').val().trim();
+        conf.prefix = $('#edit-prefix').val().trim();
+        conf.separator = $('#edit-separator').val().trim();
+    }
+    if($('#edit-headers').hasClass('checkbox-on')){
+        conf.additional |= Config.additionRule.crossDomain;
+    }
+    if($('#edit-pause-req').hasClass('checkbox-on')){
+        conf.additional |= Config.additionRule.requestPause;
+    }
+    if($('#edit-pause-res').hasClass('checkbox-on')){
+        conf.additional |= Config.additionRule.responsePause;
     }
     return conf;
 };
@@ -347,6 +359,16 @@ var ruleInit = function(){
             });
         }else{
             target.find('#edit-combo-sub').slideUp(300);
+        }
+    });
+
+    CheckBox.on(/^edit-addition/,function(id,val){
+        var target = $('#rule-edit');
+        if(!target.length) return;
+        if(val){
+            target.find('#edit-addition-sub').slideDown(300);
+        }else{
+            target.find('#edit-addition-sub').slideUp(300);
         }
     });
 

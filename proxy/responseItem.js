@@ -1,3 +1,5 @@
+var additional = require('./rule').additionRule;
+
 function ResponseItem(res, matched){
     this.res = res;
     this.matched = matched;
@@ -17,6 +19,11 @@ ResponseItem.methods({
     },
 
     end: function(content){
+        if(this.matched && (this.matched.additional & additional.crossDomain)>0){
+            //override
+            this.setHeader('Access-Control-Allow-Origin','*');
+            this.setHeader('Access-Control-Allow-Credentials','true');
+        }
         this.res.write(content);
         this.res.end();
     }

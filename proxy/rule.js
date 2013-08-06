@@ -9,6 +9,15 @@ var groups = {
     }
 };
 
+//sync all these values in tmpl/ruleEdit.ejs
+var additionRule = {
+    none: 0,
+    requestPause: 1,
+    responsePause: 2,
+  //  speedControl: 4,
+    crossDomain: 4
+};
+
 var hostReg = /^\d+\.\d+\.\d+\.\d+$/;
 
 var importRule = function(raw){
@@ -54,12 +63,14 @@ var processConf = function(conf){
         conf.type = 'Host';
     }
     return conf;
-}
+};
 
 exports.init = function(){
     var cache = LocalStorage.getItem('config-rule');
     importRule(cache);
-}
+};
+
+exports.additionRule = additionRule;
 
 /**
  *

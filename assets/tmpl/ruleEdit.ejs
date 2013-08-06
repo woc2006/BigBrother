@@ -1,6 +1,8 @@
 <li id="rule-edit" style="display: none;">
     <%
         var isCombo = locals.type == 'Combo';
+        var isAdd = locals.additional || locals.speed;
+        var add = locals.additional || 0;
     %>
     <div>
         <label>Target:</label><input type="text" id="edit-source" value="<%=(locals.source || '')%>"placeholder="Target url"/><div id="edit-combo" class="checkbox<%=(isCombo ?' checkbox-on':'')%>"></div><span>It's combo url</span>
@@ -10,10 +12,15 @@
         <label>Separator:</label><input type="text" id="edit-separator" value="<%=(locals.separator || '')%>" placeholder="Split by..."/>
     </div>
     <div>
-        <label>Replace:</label><input type="text" id="edit-dest" value="<%=(locals.dest || '')%>" placeholder="File, Folder or Host. Double click to select file."/>
+        <label>Replace:</label><input type="text" id="edit-dest" value="<%=(locals.dest || '')%>" placeholder="File, Folder or Host. Double click to select file."/><div id="edit-addition" class="checkbox<%=(isAdd ?' checkbox-on':'')%>"></div><span>Additional</span>
     </div>
-    <div class="edit-sub" style="display: none;">
-        <div class="checkbox"></div><span>Add cross origin header</span>
+    <div id="edit-addition-sub" class="edit-sub" style="display: <%=(isAdd? 'block':'none')%>">
+        <div>
+            <label>Speed:</label><input type="text" id="edit-speed" value="<%=(locals.speed || '')%>" placeholder="Kb/s"/><div id="edit-headers" class="checkbox<%=((add & 4) ?' checkbox-on':'')%>"></div><span>Add cross origin headers</span>
+        </div>
+        <div>
+            <div id="edit-pause-req" class="checkbox<%=((add & 1) ?' checkbox-on':'')%>"></div><span>Pause request</span><div id="edit-pause-res" class="checkbox<%=((add & 2) ?' checkbox-on':'')%>"></div><span>Pause response</span>
+        </div>
     </div>
     <div class="edit-button">
         <img data-tool="ok" src="assets/img/ok.png"/><img data-tool="cancel" src="assets/img/cancel.png"/>

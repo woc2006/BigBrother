@@ -319,6 +319,7 @@ ul{
     display: inline-block;
     width: 65px;
     padding-left: 3px;
+    vertical-align: middle;
 }
 #rule-edit input{
     width: 500px;
@@ -338,6 +339,14 @@ ul{
 
 #rule-list .edit-sub input{
     width: 100px;
+}
+
+#rule-list #edit-addition-sub input{
+    margin-right: 45px;
+}
+
+#rule-list #edit-addition-sub span{
+    width:188px;
 }
 /*page config*/
 #config{
