@@ -13,6 +13,8 @@ exports.addSession = function(req, res, match){
         status: res.res.statusCode || 500,
         host: req._parsedUrl.hostname,
         path: req._parsedUrl.pathname,
+        query: req.paramQuery,
+        data: req.paramPost,
         method: req.method,
         requestHeader: req.headers,
         responseHeader: res.res.headers || res.res._headers || res.res._header || {}

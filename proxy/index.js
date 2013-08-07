@@ -1,3 +1,4 @@
+var Url = require('url');
 var Rules = require('./rule');
 var ProcessRequest = require('./route/request');
 var ProcessReplace = require('./route/replace');
@@ -6,10 +7,13 @@ var ResponseItem = require('./responseItem').ResponseItem;
 var RequestItem = require('./requestItem').RequestItem;
 
 exports.process = function(req, res){
+    req._parsedUrl = Url.parse(req.url);
     req._parsedUrl.hostname = req._parsedUrl.hostname || '127.0.0.1';
+    req._parsedUrl.path = req._parsedUrl.path || '/';
     req._parsedUrl.pathname = req._parsedUrl.pathname || '/';
-    req._parsedUrl.protocol = req._parsedUrl.protocol || 'http:'
-    var url = req._parsedUrl.protocol + '//' + req._parsedUrl.hostname + req._parsedUrl.pathname;
+    req._parsedUrl.protocol = req._parsedUrl.protocol || 'http:';
+    req._parsedUrl.port = req._parsedUrl.port || 80;
+    var url = req.url;
 
     var matched = Rules.matchRule(url);
     var reqItem = new RequestItem(req, res, matched, function(_req, _res, _matched){

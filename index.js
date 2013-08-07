@@ -1,9 +1,7 @@
-var connect = require('connect');
 var proxy = require('./proxy/index');
+var http = require('http');
 
-var app = connect();
+var serverHttp = http.createServer(function(req, res){
+    proxy.process(req, res);
+}).listen(3000);
 
-//app.use(connect.logger('dev'));
-app.use(proxy.process);
-
-app.listen(3000);

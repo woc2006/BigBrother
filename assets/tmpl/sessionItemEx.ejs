@@ -1,4 +1,23 @@
 <li class="ex" id="sessionEx-<%=id%>">
+    <%if(locals.query){%>
+        <div class="title4">Queries</div>
+        <dl class="sub">
+            <%for(var key in query){%>
+            <dt><%=key%></dt>
+            <dd><%=query[key]%></dd>
+            <%}%>
+        </dl>
+    <%}%>
+
+    <%if(locals.data){%>
+        <div class="title4">Post data</div>
+        <dl class="sub">
+            <%for(var key in data){%>
+            <dt><%=key%></dt>
+            <dd><%=data[key]%></dd>
+            <%}%>
+        </dl>
+    <%}%>
     <div class="title4">Request Headers</div>
     <dl class="sub">
         <%for(var key in requestHeader){%>

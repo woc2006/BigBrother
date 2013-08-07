@@ -36,7 +36,6 @@ exports.addSession = function(session, match){
         container.append(html);
         currentDisplayed++;
         if(currentDisplayed > maxCache){
-            //TODO: need timeout
             container.children(':first').remove();
             currentDisplayed--;
         }

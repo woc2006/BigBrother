@@ -11,7 +11,7 @@ var sendRequest = function(conf){
 
     var request = http.request({
         host: conf.host,
-        port: 80,
+        port: conf.port,
         method: method,
         path: conf.path || '/',
         headers: conf.headers || {}
@@ -28,6 +28,8 @@ var sendRequest = function(conf){
         });
 
         res.on('end', function(){
+            res.removeAllListeners('data');
+            res.removeAllListeners('end');
             clearTimeout(responseTimeout);
             conf.callback({
                 res: res,
@@ -58,12 +60,14 @@ var sendRequest = function(conf){
 exports.process = function(req, res){
     var conf = {
         host: req._parsedUrl.hostname,
-        path: req._parsedUrl.pathname,
+        port: req._parsedUrl.port,
+        path: req._parsedUrl.path,
         method: req.method,
         headers: req.headers,
+        data: req.postData || null,
         callback: function(resp){
             if(resp.error){
-                res.writeHead(500,resp.error);
+                res.writeHead(500,{});
                 res.end();
             }else{
                 res.writeHead(resp.res.statusCode, resp.res.headers);
@@ -72,18 +76,7 @@ exports.process = function(req, res){
             sessionBridge.addSession(req, res || {});
         }
     };
-    if(req.method === 'POST'){
-        var buffer = [];
-        req.on('data',function(chunk){
-            buffer.push(chunk);
-        });
 
-        req.on('end',function(chunk){
-            conf.data = Buffer.concat(buffer);
-            sendRequest(conf);
-        });
-    }else{
-        sendRequest(conf);
-    }
+    sendRequest(conf);
     return true;
 };
