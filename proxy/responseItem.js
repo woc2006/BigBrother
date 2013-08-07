@@ -10,8 +10,12 @@ ResponseItem.methods({
         this.res.setHeader(key, value);
     },
 
-    writeHead: function(status, header){
-        this.res.writeHead(status, header);
+    writeHead: function(status, headers){
+        this.setStatus(status);
+        for(var key in headers){
+            this.setHeader(key, headers[key]);
+        }
+        //this.res.writeHead(status, header);
     },
 
     setStatus: function(status){
@@ -24,7 +28,9 @@ ResponseItem.methods({
             this.setHeader('Access-Control-Allow-Origin','*');
             this.setHeader('Access-Control-Allow-Credentials','true');
         }
-        this.res.write(content);
+        if(content){
+            this.res.write(content);
+        }
         this.res.end();
     }
 });

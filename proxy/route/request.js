@@ -2,12 +2,17 @@ var http = require('http');
 var Buffer = require('buffer').Buffer;
 var sessionBridge = require('./../sessionBridge');
 
-
+var timeout = {
+    'GET': 30000,
+    'POST': 60000
+}
 var sendRequest = function(conf){
+    var method = conf.method || 'GET';
+
     var request = http.request({
         host: conf.host,
         port: 80,
-        method: conf.method || 'GET',
+        method: method,
         path: conf.path || '/',
         headers: conf.headers || {}
     },function(res){
@@ -15,7 +20,7 @@ var sendRequest = function(conf){
         var responseTimeout = setTimeout(function(){
             request.abort();
             conf.callback({error: 'response timeout'});
-        },30000);
+        }, timeout[method]);
 
         var buffers = [];
         res.on('data', function(chunk){
@@ -38,9 +43,11 @@ var sendRequest = function(conf){
     var requestTimeout = setTimeout(function(){
         request.abort();
         conf.callback({error: 'request timeout'});
-    },15000);
+    },timeout[method]);
 
     request.on('error',function(err){
+        clearTimeout(requestTimeout);
+        request.abort();
         conf.callback({error: 'internal error'});
     });
 

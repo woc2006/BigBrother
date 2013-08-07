@@ -19,6 +19,7 @@ var additionRule = {
 };
 
 var hostReg = /^\d+\.\d+\.\d+\.\d+$/;
+var regReg = /^\/(.*)\/([gmi]{0,3}$)/;
 
 var importRule = function(raw){
     var conf;
@@ -51,8 +52,13 @@ var saveRule = function(){
  * @returns {RegExp}
  */
 var buildMatchReg = function(source){
-    var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?#]+)?([\\?#].*)?';
-    return new RegExp(str);
+    var match = regReg.exec(source);
+    if(match){
+        return new RegExp(match[1],match[2]);
+    }else{
+        var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?#]+)?([\\?#].*)?';
+        return new RegExp(str);
+    }
 };
 
 var processConf = function(conf){

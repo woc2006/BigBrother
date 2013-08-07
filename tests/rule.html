@@ -144,6 +144,18 @@
         deepEqual(result1[1],'/qzone/phone/m/v4/manifest.js');
         deepEqual(result1[2],undefined);
     });
+
+    test('regex reg build',function(){
+        var input = "/foo(.+)/gi";
+        var output = buildMatchReg(input);
+
+        equal(output.global, true);
+        equal(output.ignoreCase, true);
+        var test1 = 'FOOBAR';
+        var result1 = output.exec(test1);
+        deepEqual(result1.length, 2);
+        deepEqual(result1[1], 'BAR');
+    });
 </script>
 </body>
 </html>
