@@ -2,6 +2,7 @@ var fs = require('fs');
 var mime = require('mime');
 var sessionBridge = require('./../sessionBridge');
 var ProcessRequest = require('./request');
+var Buffer = require('buffer').Buffer;
 
 
 exports.process = function(req, res, files){
@@ -22,7 +23,7 @@ exports.process = function(req, res, files){
                 if(!successCount){
                     ProcessRequest.process(req, res);  //route to network
                 }else{
-                    var result = buffers.join('\r\n');
+                    var result = Buffer.concat(buffers);
                     res.setStatus(200);
                     res.setHeader('Content-Length', result.length);
                     res.setHeader('Content-Type', mime.lookup(file));

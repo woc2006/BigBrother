@@ -23,15 +23,40 @@ ResponseItem.methods({
     },
 
     end: function(content){
-        if(this.matched && (this.matched.additional & additional.crossDomain)>0){
+        var meta = null, res = this.res;
+        if(this.matched){
+            meta = this.matched.meta;
+        }
+        if(meta && (meta.additional & additional.crossDomain)>0){
             //override
             this.setHeader('Access-Control-Allow-Origin','*');
             this.setHeader('Access-Control-Allow-Credentials','true');
         }
-        if(content){
-            this.res.write(content);
+        if(!content){
+            res.end();
+            return;
         }
-        this.res.end();
+        if(meta && meta.speed){
+            var index = 0,
+                len = content.length;
+
+            var send = function(){
+                var end = Math.floor(index + meta.speed * 256);
+                if(end > len){
+                    end = len;
+                }
+                res.write(content.slice(index, end));
+                index = end;
+                if(index < len){
+                    setTimeout(send, 250);
+                }else{
+                    res.end();
+                }
+            }
+            send();
+        }else{
+            res.end(content);
+        }
     }
 });
 
