@@ -6,6 +6,8 @@ var ProcessCombo = require('./route/combo');
 var ResponseItem = require('./responseItem').ResponseItem;
 var RequestItem = require('./requestItem').RequestItem;
 
+var regHttp = /^http/;
+
 exports.process = function(req, res){
     req._parsedUrl = Url.parse(req.url);
     req._parsedUrl.hostname = req._parsedUrl.hostname || '127.0.0.1';
@@ -31,7 +33,12 @@ exports.process = function(req, res){
                 ProcessCombo.process(_req, resItem, _matched.files);
                 break;
             default:
-                ProcessReplace.process(_req, resItem, _matched.files[0]);
+                var str = _matched.files[0];
+                if(regHttp.test(str)){
+                    ProcessRequest.processAnotherUrl(_req, resItem, str);
+                }else{
+                    ProcessReplace.process(_req, resItem, str);
+                }
                 break;
         }
     })

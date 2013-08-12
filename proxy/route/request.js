@@ -1,3 +1,4 @@
+var Url = require('url');
 var http = require('http');
 var Buffer = require('buffer').Buffer;
 var sessionBridge = require('./../sessionBridge');
@@ -77,6 +78,30 @@ exports.process = function(req, res){
         }
     };
 
+    sendRequest(conf);
+    return true;
+};
+
+exports.processAnotherUrl = function(req, res, url){
+    var _parsed = Url.parse(url);
+    var conf = {
+        host: _parsed.hostname,
+        port: _parsed.port || 80,
+        path: _parsed.path || '/',
+        method: req.method,
+        headers: req.headers,
+        data: req.postData || null,
+        callback: function(resp){
+            if(resp.error){
+                exports.process(req, res);
+            }else{
+                res.writeHead(resp.res.statusCode, resp.res.headers);
+                res.end(resp.content);
+                sessionBridge.addSession(req, res || {});
+            }
+        }
+    };
+    conf.headers['host'] = conf.host;
     sendRequest(conf);
     return true;
 };
