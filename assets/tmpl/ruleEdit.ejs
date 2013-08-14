@@ -19,7 +19,9 @@
             <label>Speed:</label><input type="text" id="edit-speed" value="<%=(locals.speed || '')%>" placeholder="Kb/s"/><div id="edit-headers" class="checkbox<%=((add & 4) ?' checkbox-on':'')%>"></div><span>Add cross origin headers</span>
         </div>
         <div>
-            <div id="edit-pause-req" class="checkbox<%=((add & 1) ?' checkbox-on':'')%>"></div><span>Pause request</span><div id="edit-pause-res" class="checkbox<%=((add & 2) ?' checkbox-on':'')%>"></div><span>Pause response</span>
+            <div id="edit-pause-req" class="checkbox<%=((add & 1) ?' checkbox-on':'')%>"></div><span>Pause request</span>
+            <div id="edit-pause-res" class="checkbox<%=((add & 2) ?' checkbox-on':'')%>"></div><span>Pause response</span>
+            <div id="edit-continue" class="checkbox<%=((add & 8) ?' checkbox-on':'')%>"></div><span>Continue matching</span>
         </div>
     </div>
     <div class="edit-button">

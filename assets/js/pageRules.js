@@ -28,13 +28,12 @@ var getEditResult = function(target){
     var conf = {
         source: $('#edit-source').val().trim(),
         dest: $('#edit-dest').val().trim(),
-        type: $('#edit-combo').hasClass('checkbox-on')? 'Combo':'Replace',
         prefix:'',
         separator:'',
         additional: 0,
         speed: ~~parseInt($('#edit-speed').val().trim())
     };
-    if(conf.type == 'Combo'){
+    if($('#edit-combo').hasClass('checkbox-on')){
         conf.prefix = $('#edit-prefix').val().trim();
         conf.separator = $('#edit-separator').val().trim();
     }
@@ -46,6 +45,9 @@ var getEditResult = function(target){
     }
     if($('#edit-pause-res').hasClass('checkbox-on')){
         conf.additional |= Config.additionRule.responsePause;
+    }
+    if($('#edit-continue').hasClass('checkbox-on')){
+        conf.additional |= Config.additionRule.continue;
     }
     return conf;
 };

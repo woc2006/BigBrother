@@ -14,8 +14,8 @@ var additionRule = {
     none: 0,
     requestPause: 1,
     responsePause: 2,
-  //  speedControl: 4,
-    crossDomain: 4
+    crossDomain: 4,
+    continue: 8
 };
 
 var hostReg = /^\d+\.\d+\.\d+\.\d+$/;
@@ -67,6 +67,12 @@ var processConf = function(conf){
     conf.matchReg = buildMatchReg(conf.source);
     if(hostReg.exec(conf.dest)){
         conf.type = 'Host';
+    }else if(conf.dest == ''){
+        conf.type = 'Addition';
+    }else if(conf.prefix != '' || conf.separator !=''){
+        conf.type = 'Combo';
+    }else{
+        conf.type = 'Replace';
     }
     return conf;
 };
@@ -219,6 +225,7 @@ exports.getRule = function(group, id){
 
 //TODO: need cache for fast reference
 exports.matchRule = function(url){
+    var matchedRule = null;
     for(var key in groups){
         var _group = groups[key];
         if(!_group.enable) continue;
@@ -228,24 +235,41 @@ exports.matchRule = function(url){
             if(!_rule.matchReg) continue;
             var match = _rule.matchReg.exec(url);
             if(!match) continue;
-            var resultArr = [];
-            if(!match[1] || match[1] == '/' || match[1] == '\\'){
-                resultArr.push(_rule.dest);
-            }else if(_rule.type == 'Host'){
-                resultArr.push(_rule.dest);
-            }else if(_rule.type == 'Replace'){
-                resultArr.push((_rule.dest + match[1]).replace(/\//g,path.sep));
+            matchedRule = $.extend({},matchedRule,_rule);
+
+            if((_rule.additional & additionRule.continue)>0){
+                continue;
             }else{
-                var arr = match[1].split(_rule.separator);
-                for(var i= 0,len = arr.length;i<len;i++){
-                    resultArr.push((_rule.dest + arr[i].replace(_rule.prefix,'')).replace(/\//g, path.sep));
-                }
+                return buildMatchedResult(matchedRule, url);
             }
-            return {
-                files: resultArr,
-                meta: _rule
-            };
         }
     }
-    return null;
+    if(matchedRule){
+        return buildMatchedResult(matchedRule, url);
+    }else{
+        return null;
+    }
 };
+
+var buildMatchedResult = function(rule, url){
+    var match = rule.matchReg.exec(url); //always matched
+    var resultArr = [];
+    if(!match[1] || match[1] == '/' || match[1] == '\\'){
+        resultArr.push(rule.dest);
+    }else if(rule.type == 'Addition'){
+        resultArr.push('');
+    }else if(rule.type == 'Host'){
+        resultArr.push(rule.dest);
+    }else if(rule.type == 'Replace'){
+        resultArr.push((rule.dest + match[1]).replace(/\//g,path.sep));
+    }else{
+        var arr = match[1].split(rule.separator);
+        for(var i= 0,len = arr.length;i<len;i++){
+            resultArr.push((rule.dest + arr[i].replace(rule.prefix,'')).replace(/\//g, path.sep));
+        }
+    }
+    return {
+        files: resultArr,
+        meta: rule
+    };
+}
