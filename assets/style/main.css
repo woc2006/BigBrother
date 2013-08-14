@@ -392,6 +392,46 @@ ul{
     display: none;
 }
 
+/*tool*/
+#tool-main{
+    position: absolute;
+    right: -36px;
+    bottom:-36px;
+    width:72px;
+    height:72px;
+    -webkit-border-radius: 36px;
+    z-index: 10;
+    background-color: white;
+}
+
+#tool img{
+    position: absolute;
+    z-index: 12;
+    -webkit-transition:right,bottom;
+    -webkit-transition-duration: 200ms;
+    -webkit-backface-visibility:hidden;
+}
+
+#tool img.toolHide{
+    right:-10px;
+    bottom:-10px;
+}
+
+#tool .toolClose{
+    right: 69px;
+    bottom: 14px;
+}
+
+#tool .toolClear{
+    right:50px;
+    bottom: 50px;
+}
+
+#tool .toolClear2{
+    right: 14px;
+    bottom: 69px;
+}
+
 /*tips*/
 .tips{
     border: 1px solid #BBB;
