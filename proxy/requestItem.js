@@ -32,7 +32,7 @@ RequestItem.methods({
             this.req.on('end',function(chunk){
                 req.removeAllListeners('data');
                 req.removeAllListeners('end');
-                req.postData = Buffer.concat(buffer);
+                req.postData = buffer.join('');//Buffer.concat(buffer);
                 //parse post query
                 try{
                     req.paramPost = qs.parse(req.postData);

@@ -20,13 +20,14 @@ exports.process = function(req, res){
     var matched = Rules.matchRule(url);
     var reqItem = new RequestItem(req, res, matched, function(_req, _res, _matched){
         var resItem = new ResponseItem(_res, _matched);
-        if(!_matched || !_matched.files.length){
+        if(!_matched || !_matched.files.length || !_matched.files[0]){
             ProcessRequest.process(_req, resItem);
             return;
         }
         switch (_matched.meta.type){
             case 'Host':
                 _req._parsedUrl.hostname = _matched.files[0];
+                _req._parsedUrl.port = parseInt(_matched.files[1] || 80);
                 ProcessRequest.process(_req, resItem);
                 break;
             case 'Combo':

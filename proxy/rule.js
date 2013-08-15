@@ -18,7 +18,7 @@ var additionRule = {
     continue: 8
 };
 
-var hostReg = /^\d+\.\d+\.\d+\.\d+$/;
+var hostReg = /^\d+\.\d+\.\d+\.\d+(\:\d+)?$/;
 var regReg = /^\/(.*)\/([gmi]{0,3}$)/;
 
 var importRule = function(raw){
@@ -235,7 +235,9 @@ exports.matchRule = function(url){
             if(!_rule.matchReg) continue;
             var match = _rule.matchReg.exec(url);
             if(!match) continue;
+            var add = matchedRule ? matchedRule.additional : 0;
             matchedRule = $.extend({},matchedRule,_rule);
+            matchedRule.additional = add | _rule.additional; //reset to proper value
 
             if((_rule.additional & additionRule.continue)>0){
                 continue;
@@ -259,7 +261,9 @@ var buildMatchedResult = function(rule, url){
     }else if(rule.type == 'Addition'){
         resultArr.push('');
     }else if(rule.type == 'Host'){
-        resultArr.push(rule.dest);
+        var arr = rule.dest.split(':');
+        resultArr.push(arr[0]);
+        resultArr.push(arr[1]);
     }else if(rule.type == 'Replace'){
         resultArr.push((rule.dest + match[1]).replace(/\//g,path.sep));
     }else{

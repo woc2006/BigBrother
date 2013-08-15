@@ -10,15 +10,17 @@ exports.process = function(req, res, files){
         ProcessRequest.process(req, res);
         return;  //should not happen
     }
-    var buffers = [];
+    var len = files.length;
+    var buffers = new Array(len);
     var successCount = 0;
     var count = 0;
-    var len = files.length;
-    var callback = function(data){
+    var type = mime.lookup(files[0]);
+
+    var callback = function(index,data){
         count++;
         if(data){
             successCount++;
-            buffers.push(data);
+            buffers[index] = data;
             if(count == len){
                 if(!successCount){
                     ProcessRequest.process(req, res);  //route to network
@@ -26,7 +28,7 @@ exports.process = function(req, res, files){
                     var result = Buffer.concat(buffers);
                     res.setStatus(200);
                     res.setHeader('Content-Length', result.length);
-                    res.setHeader('Content-Type', mime.lookup(file));
+                    res.setHeader('Content-Type', type);
                     res.end(result);
                     sessionBridge.addSession(req, res, true);
                 }
@@ -35,24 +37,26 @@ exports.process = function(req, res, files){
     }
 
     for(var i= 0;i<len;i++){
-        var file = files[i];
-        fs.stat(file, function(err, stat){
-            if(err || !stat){
-                callback(null);
-                return;
-            }
-            if(!stat.isFile()){
-                callback(null);
-                return;
-            }
-            fs.readFile(file, function(err, data){
-                if(err){
-                    callback(null);
+        (function(index){
+            var file = files[index];
+            fs.stat(file, function(err, stat){
+                if(err || !stat){
+                    callback(-1, null);
                     return;
                 }
-                callback(data);
+                if(!stat.isFile()){
+                    callback(-1, null);
+                    return;
+                }
+                fs.readFile(file, function(err, data){
+                    if(err){
+                        callback(-1, null);
+                        return;
+                    }
+                    callback(index, data);
+                });
             });
-        });
+        })(i);
     }
 
 }

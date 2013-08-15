@@ -158,6 +158,8 @@ ul{
     background-color: #bddf9f;
     -webkit-user-drag:none;
     display: none;
+    font-size:14px;
+    line-height: 16px;
 }
 #session-list dt{
     width: 200px;
