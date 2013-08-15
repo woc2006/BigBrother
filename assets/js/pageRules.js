@@ -47,7 +47,7 @@ var getEditResult = function(target){
         conf.additional |= Config.additionRule.responsePause;
     }
     if($('#edit-continue').hasClass('checkbox-on')){
-        conf.additional |= Config.additionRule.continue;
+        conf.additional |= Config.additionRule.continues;
     }
     return conf;
 };

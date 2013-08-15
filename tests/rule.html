@@ -158,7 +158,7 @@
     });
 
     test('mixed reg build',function(){
-        var input = "http://(?:.*)qzonestyle.gtimg.cn/qzone/phone/m/";
+        var input = 'http://(?:.*\.)qzonestyle.gtimg.cn/qzone/phone/';
         var output = buildMatchReg(input);
 
         var test1 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js';

@@ -15,7 +15,7 @@ var additionRule = {
     requestPause: 1,
     responsePause: 2,
     crossDomain: 4,
-    continue: 8
+    continues: 8
 };
 
 var regHost = /^\d+\.\d+\.\d+\.\d+(\:\d+)?$/;
@@ -255,7 +255,7 @@ exports.matchRule = function(url){
             matchedRule = $.extend({},matchedRule,_rule);
             matchedRule.additional = add | _rule.additional; //reset to proper value
 
-            if((_rule.additional & additionRule.continue)>0){
+            if((_rule.additional & additionRule.continues)>0){
                 continue;
             }else{
                 return buildMatchedResult(matchedRule, url);
