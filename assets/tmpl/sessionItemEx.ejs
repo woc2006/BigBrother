@@ -18,15 +18,24 @@
             <%}%>
         </dl>
     <%}%>
-    <div class="title4">Request Headers</div>
-    <dl class="sub">
+    <%if(locals.cookie){%>
+        <div class="title4 titleHide">Cookies</div>
+        <dl class="sub" style="display:none;">
+            <%for(var key in cookie){%>
+            <dt><%=key%></dt>
+            <dd><%=cookie[key]%></dd>
+            <%}%>
+        </dl>
+    <%}%>
+    <div class="title4 titleHide">Request Headers</div>
+    <dl class="sub" style="display:none;">
         <%for(var key in requestHeader){%>
         <dt><%=key%></dt>
         <dd><%=requestHeader[key]%></dd>
         <%}%>
     </dl>
-    <div class="title4">Response Headers</div>
-    <dl class="sub">
+    <div class="title4 titleHide">Response Headers</div>
+    <dl class="sub" style="display:none;">
         <%for(var key in responseHeader){%>
         <dt><%=key%></dt>
         <dd><%=responseHeader[key]%></dd>

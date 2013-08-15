@@ -79,4 +79,15 @@ exports.init = function(){
             targetEx.slideToggle(300);
         }
     });
+
+    container.on('click','.title4',function(e){
+        var target = $(this);
+        if(target.hasClass('titleHide')){
+            target.removeClass('titleHide');
+            target.next('dl').slideDown(300);
+        }else{
+            target.addClass('titleHide');
+            target.next('dl').slideUp(300);
+        }
+    })
 };
