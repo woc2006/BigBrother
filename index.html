@@ -18,13 +18,13 @@
     <div class="icon add title">Rules</div>
     <ul id="group-list">
         <li class="new">
-            <img src="assets/img/add.png"/>
+            <img class="toolIcon" src="assets/img/add.png"/>
             <span>Add new group</span>
         </li>
     </ul>
     <ul id="rule-list">
         <li class="new">
-            <img src="assets/img/add.png"/>
+            <img class="toolIcon" src="assets/img/add.png"/>
             <span>Add new rule</span>
         </li>
     </ul>
@@ -63,6 +63,12 @@
         <div>Request: <b>http://domain.dom/query??</b><b style="color:#528CE0">/dir</b>/foo.js<b style="color:#528CE0">&&</b>/util/bar.js</div>
         <div>Combo: <b>/Users/local/dev/</b>foo.js</div>
         <div style="padding-left: 40px;">+<b style="padding-left: 5px;">/Users/local/dev/</b>util/bar.js</div>
+        <div class="tipsContinue">Click to hide</div>
+    </div>
+    <div class="tips" id="tips-rule">
+        <div><label>Normal target:</label> http://www.foo.com/bar.js</div>
+        <div><label>Regexp target:</label> /(foo|bar).com/i</div>
+        <div><label>Mixed target:</label> http://www.<b>(?:foo|bar)</b>.com</div>
         <div class="tipsContinue">Click to hide</div>
     </div>
 </div>

@@ -124,7 +124,7 @@ var groupInit = function(){
 
     groupList.on('click','img',function(e){
         e.stopPropagation();
-        var target = $(this).parent().parent();//li
+        var target = $(this).parent();//li
         if(target.hasClass('new')) return;
         if(currentGroup && !window.confirm("Do you wish to delete this group?")) return;
         Config.updateGroup(currentGroup,null,null);
@@ -209,7 +209,15 @@ var ruleInit = function(){
                 }
                 var newItem = $(html);
                 target.before(newItem);
-                newItem.slideDown(300);
+                newItem.slideDown(300).promise().done(function(){
+                    if(Tips.isFirstShow('rule')){
+                        var offset = $('#rule-edit').offset();
+                        Tips.showTips('rule',{
+                            top: offset.top,
+                            left:offset.left + 164
+                        });
+                    }
+                })
             });
         }else{
             var id = getTargetId(target);
@@ -375,11 +383,13 @@ var ruleInit = function(){
     });
 
     File.change(function(e){
-        var target = $('#edit-dest');
-        var val = $(this).val().trim();
-        if(!target.length) return;
+        var dest = $('#edit-dest');
+        if(!dest.length) return;
+        var target = $(this);
+        var val = target.val().trim();
+        target.val('');
         if(val){
-            target.val(val);
+            dest.val(val);
         }
     });
 };

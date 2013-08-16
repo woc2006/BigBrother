@@ -47,6 +47,13 @@ ul{
 .italic{
     font-style: italic;
 }
+
+.toolIcon{
+    width: 22px;
+    height: 22px;
+    margin: 3px 3px 3px 4px;
+}
+
 /*pages*/
 .container{
     position: absolute;
@@ -141,11 +148,12 @@ ul{
 }
 
 #session-list li{
-    height: 20px;
-    line-height: 20px;
+    height: 22px;
+    line-height: 22px;
     margin-top: 1px;
     background-color: #cdefaf;
     -webkit-user-drag:element;
+    position: relative;
 }
 
 #session-list li.highlight{
@@ -207,6 +215,21 @@ ul{
     padding: 0;
 }
 
+#session-list .sessionTool{
+    position: absolute;
+    right:0;
+    top:0;
+    -webkit-transform: translateX(130px);
+}
+
+#session-list .sessionTool-hover{
+    -webkit-transform: translateX(0);
+}
+
+#session-list .sessionTool img{
+    margin: 0 3px 0 3px;
+}
+
 /*page rules*/
 #rules{
     -webkit-transform:translate3d(1180px,0,0);
@@ -237,12 +260,6 @@ ul{
     background-color: #26C782;
     white-space: nowrap;
     position: relative;
-}
-
-#rules img{
-    width: 22px;
-    height: 22px;
-    margin: 3px 3px 3px 4px;
 }
 
 #rules li.current{
@@ -362,7 +379,7 @@ ul{
 }
 
 #rule-list #edit-addition-sub span{
-    width:188px;
+    width:184px;
 }
 /*page config*/
 #config{
@@ -418,8 +435,13 @@ ul{
     display: none;
     cursor: pointer;
 }
+#tips label{
+    text-align: right;
+    padding-right: 3px;
+    width: 80px;
+}
 
-#tips-combo b{
+#tips b{
     color:#FF2222;
 }
 

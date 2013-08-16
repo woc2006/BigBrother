@@ -80,6 +80,17 @@ exports.init = function(){
         }
     });
 
+    container.on('mouseenter','li',function(e){
+        var target = $(this);
+        container.find('.sessionTool-hover').removeClass('sessionTool-hover');
+        if(target.hasClass('ex')) return;
+        target.find('.sessionTool').addClass('sessionTool-hover');
+    });
+
+    container.on('mouseleave','li',function(e){
+        container.find('.sessionTool-hover').removeClass('sessionTool-hover');
+    });
+
     container.on('click','.title4',function(e){
         var target = $(this);
         if(target.hasClass('titleHide')){

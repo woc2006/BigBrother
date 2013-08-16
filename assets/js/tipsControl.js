@@ -21,6 +21,10 @@ var saveTips = function(){
     }catch(e){}
 };
 
+exports.isFirstShow = function(key){
+    return !tips[key];
+};
+
 exports.init = function(){
     var cache = LocalStorage.getItem('config-tips');
     importTips(cache);
@@ -50,12 +54,6 @@ exports.showTips = function(key, conf){
         top: conf.top + 'px',
         left: conf.left + 'px'
     }).fadeIn(300);
-    /*setTimeout(function(){
-        if(current){
-            current.fadeOut(300);
-            current = null;
-        }
-    },5000);*/
     setTimeout(function(){
         saveTips();
     },0);

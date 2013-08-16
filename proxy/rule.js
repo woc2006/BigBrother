@@ -18,8 +18,10 @@ var additionRule = {
     continue: 8
 };
 
-var hostReg = /^\d+\.\d+\.\d+\.\d+(\:\d+)?$/;
+var regHost = /^\d+\.\d+\.\d+\.\d+(\:\d+)?$/;
 var regReg = /^\/(.*)\/([gmi]{0,3}$)/;
+var regSplit = /\(\?\:[^\)]+\)/g;
+var regReplace = /([\:\+\.\?\$\\\/\|\*])/g;
 
 var importRule = function(raw){
     var conf;
@@ -56,8 +58,22 @@ var buildMatchReg = function(source){
     if(match){
         return new RegExp(match[1],match[2]);
     }else{
-        var str = source.replace(/([\:\+\.\?\$\\\/\|\*])/g,'\\$1')+'([^\\?#]+)?([\\?#].*)?';
-        return new RegExp(str);
+        var arr = source.split(regSplit);
+        if(!arr || !arr.length){
+            arr = [source];
+            arr[0] = arr[0].replace(regReplace,'\\$1');
+        }else{
+            for(var i=0;i<arr.length;i++){
+                arr[i] = arr[i].replace(regReplace,'\\$1');
+            }
+            var index = 1;
+            while(t = regSplit.exec(source)){
+                arr.splice(index,0,t[0]);
+                index += 2;
+            }
+        }
+
+        return new RegExp(arr.join('')+'([^\\?#]+)?([\\?#].*)?');
     }
 };
 
@@ -65,7 +81,7 @@ var processConf = function(conf){
     conf.source = conf.source.trim();
     conf.dest = conf.dest.trim();
     conf.matchReg = buildMatchReg(conf.source);
-    if(hostReg.exec(conf.dest)){
+    if(regHost.exec(conf.dest)){
         conf.type = 'Host';
     }else if(conf.dest == ''){
         conf.type = 'Addition';

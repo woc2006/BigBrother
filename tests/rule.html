@@ -156,6 +156,36 @@
         deepEqual(result1.length, 2);
         deepEqual(result1[1], 'BAR');
     });
+
+    test('mixed reg build',function(){
+        var input = "http://(?:.*)qzonestyle.gtimg.cn/qzone/phone/m/";
+        var output = buildMatchReg(input);
+
+        var test1 = 'http://qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js';
+        var test2 = 'http://touch.qzonestyle.gtimg.cn/qzone/phone/m/v4/manifest.js';
+        var result1 = output.exec(test1);
+        var result2 = output.exec(test2);
+        deepEqual(result1.length,3);
+        deepEqual(result2.length,3);
+        deepEqual(result1[1],'v4/manifest.js');
+        deepEqual(result2[1],'v4/manifest.js');
+
+        input = "http://(?:.*)qzonestyle.gtimg.(?:com|cn|net)/qzone/phone/m/";
+        output = buildMatchReg(input);
+        var test3 = 'http://qzonestyle.gtimg.com/qzone/phone/m/v4/manifest.js';
+        var test4 = 'http://touch.qzonestyle.gtimg.net/qzone/phone/m/v4/manifest.js';
+        var test5 = 'http://touch.qzonestyle.gtimg.hk/qzone/phone/m/v4/manifest.js';
+        var result3 = output.exec(test3);
+        deepEqual(result3.length,3);
+        deepEqual(result3[1],'v4/manifest.js');
+
+        var result4 = output.exec(test4);
+        deepEqual(result4.length,3);
+        deepEqual(result4[1],'v4/manifest.js');
+
+        var result5 = output.exec(test5);
+        deepEqual(result5, null);
+    });
 </script>
 </body>
 </html>

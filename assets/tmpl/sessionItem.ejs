@@ -4,12 +4,20 @@
         if(match.bold) cls += " bold";
         if(match.italic) cls+= " italic";
         style="color:"+match.color;
+
     }
+    var statusStyle = session.status >= 400 ? "color:#E00;font-weight:bold;":"";
     var _method = session.method == "POST"? "POST:": "";
 %>
 
 <li id="session-<%=session.id%>" class="<%=(session.highlight?'highlight':'')%>">
-    <span class="status"><%=session.status%></span>
+    <span class="status" style="<%=statusStyle%>"><%=session.status%></span>
     <span class="host<%=cls%>" style="<%=style%>"><%=_method%><%=session.host%></span>
     <span class="query<%=cls%>" style="<%=style%>"><%=session.path%></span>
+    <div class="sessionTool animate">
+        <img class="toolIcon" data-tool="copy" src="assets/img/copy.png">
+        <img class="toolIcon" data-tool="up" src="assets/img/up.png">
+        <img class="toolIcon" data-tool="down" src="assets/img/down.png">
+        <img class="toolIcon" data-tool="delete" src="assets/img/cancel.png">
+    </div>
 </li>
