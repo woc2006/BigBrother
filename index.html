@@ -7,12 +7,13 @@
 </head>
 <body>
 <div id="sessions" class="container">
-    <div id="back-des">
-        Set browser proxy to 127.0.0.1:3000 to start
-    </div>
     <ul id="session-list">
 
     </ul>
+    <div id="session-tool">
+        <span>Sessions:</span><span id="session-count">4</span>
+        <img class="toolIcon" data-tool="delete" src="assets/img/cancel.png">
+    </div>
 </div>
 <div id="rules" class="container animate">
     <div class="icon add title">Rules</div>
@@ -58,6 +59,10 @@
 </div>
 
 <div id="tips">
+    <div class="tips" id="tips-start">
+        <div>Set browser proxy to <b>127.0.0.1:3000</b> to start</div>
+        <div class="tipsContinue">Click to hide</div>
+    </div>
     <div class="tips" id="tips-combo">
         <div><span style="margin-left: 55px;">Target</span><span style="margin-left: 150px;">Prefix</span><span style="margin-left: 25px;">Separator</span></div>
         <div>Request: <b>http://domain.dom/query??</b><b style="color:#528CE0">/dir</b>/foo.js<b style="color:#528CE0">&&</b>/util/bar.js</div>
@@ -75,7 +80,7 @@
 
 <script type="text/javascript">
     require('./assets/js/init').init();
-    require('./index');
+    //require('./index');
 </script>
 </body>
 </html>

@@ -230,6 +230,30 @@ ul{
     margin: 0 3px 0 3px;
 }
 
+#session-tool{
+    height: 24px;
+    width: 1158px;
+    background-color: #DAA;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    line-height: 24px;
+    z-index:1;
+    padding-left: 2px;
+    display: none;
+}
+
+#session-count{
+    padding-left: 6px;
+}
+
+#session-tool img{
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 1px 3px 1px 1px;
+}
+
 /*page rules*/
 #rules{
     -webkit-transform:translate3d(1180px,0,0);

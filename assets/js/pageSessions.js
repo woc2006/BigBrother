@@ -1,29 +1,60 @@
 var $ = window.$;
 var ejs = require('ejs');
 var Style = require('../../proxy/config').getRuleStyle();
+var Tips = require('./tipsControl');
+var gui = window.require('nw.gui');
+var Clipboard = gui.Clipboard.get();
 
 var container = $('#session-list');
-var first = true;
 var sessionId = 0;
 var maxCache = 200;
 var currentDisplayed = 0;
 var cached = [];
 var cachedEx = [];
 
-var processFirst = function(){
-    $('#back-des').hide();
-    first = false;
-};
+var regId = /session-(\d+)/;
 
 var cache = function(session){
-    if(first){
-        processFirst();
-    }
     if(cached.length == maxCache*2){
         cached.splice(0,maxCache);
     }
     cached.push(session);
-}
+};
+
+var getSessionById = function(id){
+    if(typeof id == 'undefined') return null;
+    var session = null;
+    //search in reversed order
+    for(var i=cached.length -1;i>=0;i--){
+        var _id = cached[i].id;
+        if(_id > id) continue;
+        if(_id < id) break;
+        if(_id == id){
+            session = cached[i];
+            break;
+        }
+    }
+    return session;
+};
+
+var buildUrlFromSession = function(session){
+    var url = 'htpp:/' + session.host + session.path;  //ignore https now.
+    if(session.query){
+        url += '?' + session.query;
+    }
+    return url;
+};
+
+var lastUpdateStatus = 0;
+var updateStatus = function(){
+    if(currentDisplayed == 0 && lastUpdateStatus != 0){
+        $('#session-tool').fadeOut(300);
+    }else if(lastUpdateStatus == 0 && currentDisplayed != 0){
+        $('#session-tool').fadeIn(300);
+    }
+    lastUpdateStatus = currentDisplayed;
+    $('#session-count').text(currentDisplayed);
+};
 
 exports.addSession = function(session, match){
     if(!session || !session.status){
@@ -39,30 +70,25 @@ exports.addSession = function(session, match){
             container.children(':first').remove();
             currentDisplayed--;
         }
+        updateStatus();
     });
 };
 
 exports.init = function(){
+    Tips.showTips('start',{
+        left: 420,
+        top: 320
+    });
     container.on('click','li',function(e){
-        var target = $(this);
+        var target = $(this),
             idRaw = target.attr('id');
-        var id = /session-(.+)/.exec(idRaw);
+        var id = regId.exec(idRaw);
         if(!id) return;
         id = parseInt(id[1]);
         var targetEx = target.next('.ex');
         if(!targetEx.length){
             //render a new ex item
-            var session;
-            //search in reversed order
-            for(var i=cached.length -1;i>=0;i--){
-                var _id = cached[i].id;
-                if(_id > id) continue;
-                if(_id < id) break;
-                if(_id == id){
-                    session = cached[i];
-                    break;
-                }
-            }
+            var session = getSessionById(id);
             if(!session) return;
             ejs.renderFile('assets/tmpl/sessionItemEx.ejs',session,function(err,html){
                 targetEx = $(html);
@@ -79,6 +105,49 @@ exports.init = function(){
             targetEx.slideToggle(300);
         }
     });
+
+    container.on('click','img',function(e){
+        e.stopPropagation();
+        var target = $(this),
+            tool = target.data('tool');
+        var parent = target.parent().parent(),//li
+            id = regId.exec(parent.attr('id'));
+        id = parseInt(id[1]);
+        var session = getSessionById(id);
+        if(!session || !tool) return;
+        switch (tool){
+            case 'copy':
+                var url = buildUrlFromSession(session);
+                Clipboard.set(url,'text');
+                break;
+            case 'delete':
+                var next = parent.next('.ex');
+                next.slideUp(300);
+                parent.slideUp(300).promise().done(function(){
+                    parent.remove();
+                    next.remove();
+                    currentDisplayed--;
+                    updateStatus();
+                });
+                break;
+        }
+    });
+
+    $('#session-tool').on('click','img',function(e){
+        e.stopPropagation();
+        var target = $(this),
+            tool = target.data('tool');
+        if(!tool) return;
+        switch (tool){
+            case 'delete':
+                cached = [];
+                cachedEx = [];
+                currentDisplayed = 0;
+                updateStatus();
+                container.html('');
+                break;
+        }
+    })
 
     container.on('mouseenter','li',function(e){
         var target = $(this);
