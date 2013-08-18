@@ -105,3 +105,24 @@ exports.processAnotherUrl = function(req, res, url){
     sendRequest(conf);
     return true;
 };
+
+exports.getDataFromUrl = function(url, callback){
+    var _parsed = Url.parse(url);
+    var conf = {
+        host: _parsed.hostname,
+        port: _parsed.port || 80,
+        path: _parsed.path || '/',
+        method: 'GET',
+        headers: [],
+        data: null,
+        callback: function(resp){
+            if(resp.error || resp.res.statusCode >= 400 || !resp.content.length){
+                callback(null);
+            }else{
+                callback(resp.content);
+            }
+        }
+    };
+    conf.headers['host'] = conf.host;
+    sendRequest(conf);
+}

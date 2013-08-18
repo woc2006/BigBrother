@@ -5,7 +5,7 @@ var ProcessRequest = require('./request');
 var Buffer = require('buffer').Buffer;
 
 
-exports.process = function(req, res, files){
+exports.process = function(req, res, files, remote){
     if(!files || !files.length){
         ProcessRequest.process(req, res);
         return;  //should not happen
@@ -21,18 +21,16 @@ exports.process = function(req, res, files){
         if(data){
             successCount++;
             buffers[index] = data;
-            if(count == len){
-                if(!successCount){
-                    ProcessRequest.process(req, res);  //route to network
-                }else{
-                    var result = Buffer.concat(buffers);
-                    res.setStatus(200);
-                    res.setHeader('Content-Length', result.length);
-                    res.setHeader('Content-Type', type);
-                    res.end(result);
-                    sessionBridge.addSession(req, res, true);
-                }
-            }
+        }else{
+            buffers[index] = new Buffer(0);
+        }
+        if(count == len){
+            var result = Buffer.concat(buffers);
+            res.setStatus(200);
+            res.setHeader('Content-Length', result.length);
+            res.setHeader('Content-Type', type);
+            res.end(result);
+            sessionBridge.addSession(req, res, true);
         }
     }
 
@@ -40,12 +38,11 @@ exports.process = function(req, res, files){
         (function(index){
             var file = files[index];
             fs.stat(file, function(err, stat){
-                if(err || !stat){
-                    callback(-1, null);
-                    return;
-                }
-                if(!stat.isFile()){
-                    callback(-1, null);
+                if(err || !stat || !stat.isFile()){
+                    //get single file from remote server
+                    ProcessRequest.getDataFromUrl(remote[index], function(data){
+                        callback(index, data);
+                    });
                     return;
                 }
                 fs.readFile(file, function(err, data){

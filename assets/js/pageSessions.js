@@ -40,7 +40,10 @@ var getSessionById = function(id){
 var buildUrlFromSession = function(session){
     var url = 'htpp:/' + session.host + session.path;  //ignore https now.
     if(session.query){
-        url += '?' + session.query;
+        url += '?';
+        for(var key in session.query){
+            url += key + '=' + session.query[key];
+        }
     }
     return url;
 };

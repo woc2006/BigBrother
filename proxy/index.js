@@ -9,12 +9,31 @@ var RequestItem = require('./requestItem').RequestItem;
 var regHttp = /^http/;
 
 exports.process = function(req, res){
-    req._parsedUrl = Url.parse(req.url);
-    req._parsedUrl.hostname = req._parsedUrl.hostname || '127.0.0.1';
-    req._parsedUrl.path = req._parsedUrl.path || '/';
-    req._parsedUrl.pathname = req._parsedUrl.pathname || '/';
-    req._parsedUrl.protocol = req._parsedUrl.protocol || 'http:';
-    req._parsedUrl.port = req._parsedUrl.port || 80;
+    var _parsedUrl = Url.parse(req.url);
+    //url fix
+    _parsedUrl.hostname = _parsedUrl.hostname || '127.0.0.1';
+    _parsedUrl.path = _parsedUrl.path || '/';
+    _parsedUrl.pathname = _parsedUrl.pathname || '/';
+    _parsedUrl.protocol = _parsedUrl.protocol || 'http:';
+    _parsedUrl.port = _parsedUrl.port || 80;
+
+    if(_parsedUrl.search && _parsedUrl.search.indexOf("??") == 0){
+        //special url like http://host/path??a.js,b.js
+        var arr = _parsedUrl.search.split("?");
+        if(arr.length >= 3){
+            _parsedUrl.pathname += '??' + arr[2];
+            arr.splice(0,3);
+            if(arr.length){
+                var realSearch = arr.join('?');
+                _parsedUrl.search = '?' + realSearch;
+                _parsedUrl.query = realSearch;
+            }else{
+                _parsedUrl.search = null;
+                _parsedUrl.query = null;
+            }
+        }
+    }
+    req._parsedUrl = _parsedUrl;
     var url = req.url;
 
     var matched = Rules.matchRule(url);
@@ -31,7 +50,7 @@ exports.process = function(req, res){
                 ProcessRequest.process(_req, resItem);
                 break;
             case 'Combo':
-                ProcessCombo.process(_req, resItem, _matched.files);
+                ProcessCombo.process(_req, resItem, _matched.files, _matched.remote);
                 break;
             default:
                 var str = _matched.files[0];

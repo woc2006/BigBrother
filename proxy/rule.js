@@ -272,6 +272,7 @@ exports.matchRule = function(url){
 var buildMatchedResult = function(rule, url){
     var match = rule.matchReg.exec(url); //always matched
     var resultArr = [];
+    var orgArr = [];
     if(!match[1] || match[1] == '/' || match[1] == '\\'){
         resultArr.push(rule.dest);
     }else if(rule.type == 'Addition'){
@@ -286,10 +287,12 @@ var buildMatchedResult = function(rule, url){
         var arr = match[1].split(rule.separator);
         for(var i= 0,len = arr.length;i<len;i++){
             resultArr.push((rule.dest + arr[i].replace(rule.prefix,'')).replace(/\//g, path.sep));
+            orgArr.push(rule.source + arr[i].replace(/\//g, path.sep)); //TODO: check this
         }
     }
     return {
         files: resultArr,
+        remote: orgArr, //empty array except combo
         meta: rule
     };
 }
