@@ -3,6 +3,7 @@ var util = require('./util');
 var pageConfig = require('./pageConfig');
 var pageRules = require('./pageRules');
 var pageSession = require('./pageSessions');
+var keyControl = require('./keyControl');
 
 var showPage = function(target,id){
     var left = id == 'rules' ? 200: 800;
@@ -23,6 +24,11 @@ var bind = function(){
         }else{
             showPage(target,id);
         }
+    });
+    keyControl.on(function(e){
+        if(e.ctrlKey){
+        }
+        return false;
     });
 };
 
