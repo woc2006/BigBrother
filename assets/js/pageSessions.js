@@ -38,7 +38,7 @@ var getSessionById = function(id){
 };
 
 var buildUrlFromSession = function(session){
-    var url = 'htpp:/' + session.host + session.path;  //ignore https now.
+    var url = 'http://' + session.host + session.path;  //ignore https now.
     if(session.query){
         url += '?';
         for(var key in session.query){
