@@ -6,7 +6,8 @@ var CheckBox = require('./interface/checkbox').CheckBox.getInstance();
 
 var groupList = $('#group-list');
 var ruleList = $('#rule-list');
-var File = $('#edit-file');
+var SelFile = $('#edit-file');
+var SelDir = $('#edit-dir');
 
 var currentGroup = '';
 var groupLock = false;  //lock group changes
@@ -252,8 +253,12 @@ var ruleInit = function(){
     ruleList.on('dblclick','input',function(e){
         var target = $(this),
             id = target.attr('id');
-        if(id == 'edit-dest'){
-            File.trigger('click');
+        if(id != 'edit-dest') return;
+        var source = $('#edit-source').val().trim();
+        if(source[source.length - 1] == '/'){
+            SelDir.trigger('click');
+        }else{
+            SelFile.trigger('click');
         }
     });
 
@@ -382,7 +387,7 @@ var ruleInit = function(){
         }
     });
 
-    File.change(function(e){
+    var changeDestValue = function(){
         var dest = $('#edit-dest');
         if(!dest.length) return;
         var target = $(this);
@@ -391,7 +396,11 @@ var ruleInit = function(){
         if(val){
             dest.val(val);
         }
-    });
+    }
+
+    SelFile.change(changeDestValue);
+
+    SelDir.change(changeDestValue);
 };
 
 
