@@ -15,18 +15,31 @@ var hidePage = function(target, id){
     target.css('webkitTransform','translateX('+left+'px)').removeClass('on');
 }
 
+var togglePage = function(target, id){
+    var target = target || $('#'+id);
+    if(target.hasClass('on')){
+        hidePage(target,id);
+    }else{
+        showPage(target,id);
+    }
+}
+
 var bind = function(){
     $('.container .add').on('click',function(e){
         var target = $(e.target).parent(),
             id = target.attr('id');
-        if(target.hasClass('on')){
-            hidePage(target,id);
-        }else{
-            showPage(target,id);
-        }
+        togglePage(target, id);
     });
     keyControl.on(function(e){
         if(e.ctrlKey){
+            switch (e.which){
+                case 49:  //1
+                    togglePage(null,'rules');
+                    break;
+                case 50:  //2
+                    togglePage(null,'config');
+                    break;
+            }
         }
         return false;
     });
