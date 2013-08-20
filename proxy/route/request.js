@@ -39,7 +39,7 @@ var sendRequest = function(conf){
         });
     });
 
-    if(conf.method === 'POST'){
+    if(conf.method === 'POST' && conf.data){
         request.write(conf.data);
     }
 

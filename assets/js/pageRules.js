@@ -2,6 +2,7 @@ var $ = window.$
 var ejs = require('ejs');
 var Config = require('../../proxy/rule');
 var Tips = require('./tipsControl');
+var Util = require('./util');
 var CheckBox = require('./interface/checkbox').CheckBox.getInstance();
 
 var groupList = $('#group-list');
@@ -14,6 +15,7 @@ var groupLock = false;  //lock group changes
 
 var regGroup = /groupItem-(.+)/;
 var regRule = /ruleItem-(.+)/;
+var regWrongChar = /[\>\<\'\"\r\n&]/g;
 
 var removeEditor = function(target){
     target = target || $('#rule-edit');
@@ -67,6 +69,19 @@ var getTargetId = function(target, isGroup){
     }
 };
 
+//remove all html tags from str
+var filterInput = function(str){
+    return str.replace(regWrongChar,'');
+};
+
+var inputContainsWrongChar = function(str){
+    var match = regWrongChar.exec(str);
+    if(match){
+        return true;
+    }
+    return false;
+}
+
 var groupInit = function(){
     groupList.on('click','li',function(e){
         if(groupLock) return;
@@ -111,6 +126,7 @@ var groupInit = function(){
         var target = $(this),
             old = target.children('span'),
             val = old.text();
+        if(target.hasClass('new')) return;
         if(val == 'Default') return;
         old.remove();
         ejs.renderFile('assets/tmpl/groupEdit.ejs',{val: val, fake: false},function(err,html){
@@ -125,19 +141,24 @@ var groupInit = function(){
 
     groupList.on('click','img',function(e){
         e.stopPropagation();
-        var target = $(this).parent();//li
+        var target = $(this).parents('li');
         if(target.hasClass('new')) return;
-        if(currentGroup && !window.confirm("Do you wish to delete this group?")) return;
-        Config.updateGroup(currentGroup,null,null);
-        //find next item
-        currentGroup = '';
-        var next = target.prev();
-        if(!next.length){
-            next = target.next();
+        var id = getTargetId(target,true);
+        if(id && !window.confirm("Do you wish to delete this group?")) return;
+        Util.imgClickEffect(this);
+        Config.updateGroup(id,null,null);
+        if(currentGroup == id){
+            //find next item
+            currentGroup = '';
+            var next = target.prev();
+            if(!next.length){
+                next = target.next();
+            }
+            if(!next.hasClass('new')){
+                currentGroup = getTargetId(next, true);
+            }
         }
-        if(!next.hasClass('new')){
-            currentGroup = getTargetId(next, true);
-        }
+
         target.slideUp().promise().done(function(){
             target.remove();
         });
@@ -146,15 +167,24 @@ var groupInit = function(){
 
     var editConfirm = function(target){
         var val = $.trim(target.val());
+        var parent = target.parent();
         if(!val) return;
-        val = encodeURIComponent(val);
+        if(inputContainsWrongChar(val)){
+            var offset = parent.offset();
+            Tips.showTips('wrongChar',{
+                left: offset.left,
+                top: offset.top + 24,
+                max: 999
+            });
+            return;
+        }
+        val = filterInput(val);
         var _config;
         if(val != currentGroup){
             _config = Config.updateGroup(currentGroup, val, null);
             if(!_config) return;
         }
         currentGroup = val;
-        var parent = target.parent();
         var groups = {};
         groups[val] = _config;
         ejs.renderFile('assets/tmpl/group.ejs',{groups: groups},function(err,html){
@@ -165,11 +195,7 @@ var groupInit = function(){
             var newItem = $(html);
             parent.replaceWith(newItem);
         });
-        //modify the old one
-      /*  target.remove();
-        parent.children('img').remove();
-        parent.append('<span>'+val+'</span>');
-        parent.children('.checkbox').attr('id','groupItem-'+val);  */
+
         swapRules(true);   //unlock in swap
     };
 
@@ -267,6 +293,7 @@ var ruleInit = function(){
         var target = $(this).parent().parent();//li
         var prev = target.prev();//maybe li.current
         var tool = $(this).data('tool');
+        Util.imgClickEffect(this);
         switch (tool){
             case 'ok':
                 removeEditor();
@@ -422,10 +449,14 @@ var swapRules = function(transition){
 
         if(transition){
             var old = ruleList.children(':not(.new)');
+            var editItem = ruleList.children('.new');
+            if(old.length){
+                editItem.fadeOut(300);
+            }
             old.fadeOut(300).promise().done(function(){
                 old.remove();
                 var newItem = $(html).hide();
-                ruleList.children('.new').before(newItem);
+                editItem.before(newItem).fadeIn(300);
                 newItem.fadeIn(300);
                 groupLock = false;
             });

@@ -2,6 +2,7 @@ var $ = window.$;
 var ejs = require('ejs');
 var Style = require('../../proxy/config').getRuleStyle();
 var Tips = require('./tipsControl');
+var Util = require('./util');
 var gui = window.require('nw.gui');
 var Clipboard = gui.Clipboard.get();
 
@@ -120,6 +121,7 @@ exports.init = function(){
         if(!session || !tool) return;
         switch (tool){
             case 'copy':
+                Util.imgClickEffect(target);
                 var url = buildUrlFromSession(session);
                 Clipboard.set(url,'text');
                 break;
@@ -141,6 +143,7 @@ exports.init = function(){
         var target = $(this),
             tool = target.data('tool');
         if(!tool) return;
+        Util.imgClickEffect(target);
         switch (tool){
             case 'delete':
                 cached = [];

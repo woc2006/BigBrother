@@ -1,3 +1,4 @@
+var $ = window.$;
 /**
  * parse position of translate3d
  * @param el
@@ -27,3 +28,13 @@ exports.getElementPosition = function(el){
         return {x:0,y:0};
     }
 };
+
+exports.imgClickEffect = function(img){
+    var $img = $(img);
+    $img.css('webkitTransform','scale(0.8)');
+    $img.on('webkitTransitionEnd',function(){
+        $img.css('webkitTransform','scale(1)');
+        $img.off('webkitTransitionEnd');
+    });
+};
+

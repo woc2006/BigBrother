@@ -52,6 +52,9 @@ ul{
     width: 22px;
     height: 22px;
     margin: 3px 3px 3px 4px;
+    -webkit-transition:-webkit-transform;
+    -webkit-transition-duration: 50ms;
+    -webkit-backface-visibility:hidden;
 }
 
 /*pages*/
@@ -219,7 +222,7 @@ ul{
     position: absolute;
     right:0;
     top:0;
-    -webkit-transform: translateX(130px);
+    -webkit-transform: translateX(90px);
 }
 
 #session-list .sessionTool-hover{
