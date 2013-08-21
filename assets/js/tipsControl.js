@@ -41,6 +41,8 @@ exports.showTips = function(key, conf){
         max: 1
     }, conf);
     if(tips[key] && tips[key] >= conf.max) return;
+    conf.top = Math.max(10, Math.min(620, conf.top));
+    conf.left = Math.max(10, Math.min(1000, conf.left));
     if(!tips[key]){
         tips[key] = 1;
     }else{

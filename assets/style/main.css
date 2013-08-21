@@ -226,7 +226,7 @@ ul{
 }
 
 #session-list .sessionTool-hover{
-    -webkit-transform: translateX(0);
+    -webkit-transform: translateX(-8px);
 }
 
 #session-list .sessionTool img{
@@ -271,7 +271,7 @@ ul{
 }
 
 #rules ul{
-    padding-top: 8px;
+    margin-top: 8px;
     float:left;
     height: 640px;
     overflow: hidden;
@@ -343,7 +343,7 @@ ul{
 }
 
 #group-list .groupItem-tool-hover{
-    -webkit-transform: translateX(0);
+    -webkit-transform: translateX(-8px);
 }
 
 #rule-list{
@@ -372,7 +372,7 @@ ul{
 }
 
 #rule-list .ruleItem-tool-hover{
-    -webkit-transform:translateX(0);
+    -webkit-transform:translateX(-8px);
 }
 
 #rule-edit label{

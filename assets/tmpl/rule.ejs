@@ -1,8 +1,12 @@
 <%for(var i=0,len = rules.length;i<len;i++){
         var rule = rules[i];
+        var showDest = rule.dest != "";
         %>
 <li><div id="ruleItem-<%=rule.id%>" class="checkbox <%=(rule.enable?'checkbox-on':'')%>"></div>
-<span class="type"><%=rule.type%>:</span><span><%=rule.source%></span><span class="arrow">=&gt;</span><span><%=rule.dest%></span>
+<span class="type"><%=rule.type%>:</span><span><%=rule.source%></span>
+<%if(showDest){%>
+<span class="arrow">=&gt;</span><span><%=rule.dest%></span>
+<%}%>
 <div class="ruleItem-tool animate">
     <img class="toolIcon" data-tool="copy" src="assets/img/copy.png"/>
     <img class="toolIcon" data-tool="up" src="assets/img/up.png"/>

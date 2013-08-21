@@ -183,6 +183,8 @@ var groupInit = function(){
         if(val != currentGroup){
             _config = Config.updateGroup(currentGroup, val, null);
             if(!_config) return;
+        }else{
+            _config = Config.getRules(currentGroup);
         }
         currentGroup = val;
         var groups = {};
@@ -199,8 +201,8 @@ var groupInit = function(){
         swapRules(true);   //unlock in swap
     };
 
-    groupList.on('keypress','input',function(e){
-        if(e.keyCode == 13){
+    groupList.on('keyup','input',function(e){
+        if(e.which == 13 || e.which == 27){
             editConfirm($(this));
         }
     });
