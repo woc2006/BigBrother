@@ -16,6 +16,9 @@
     </div>
     <div id="edit-addition-sub" class="edit-sub" style="display: <%=(isAdd? 'block':'none')%>">
         <div>
+            <label>Apply when:</label><input type="text" id="edit-filter" value="<%=(locals.filter || '')%>" placeholder="params"/>
+        </div>
+        <div>
             <label>Speed:</label><input type="text" id="edit-speed" value="<%=(locals.speed || '')%>" placeholder="Kb/s"/>
             <div id="edit-headers" class="checkbox<%=((add & 4) ?' checkbox-on':'')%>"></div><span>Add cross origin headers</span>
             <div id="edit-continue" class="checkbox<%=((add & 8) ?' checkbox-on':'')%>"></div><span>Continue matching</span>
@@ -24,7 +27,9 @@
             <div id="edit-pause-req" class="checkbox<%=((add & 1) ?' checkbox-on':'')%>"></div><span>Pause request</span>
             <div id="edit-pause-res" class="checkbox<%=((add & 2) ?' checkbox-on':'')%>"></div><span>Pause response</span>
         </div>
+
     </div>
+
     <div class="edit-button">
         <img class="toolIcon" data-tool="ok" src="assets/img/ok.png"/><img class="toolIcon" data-tool="cancel" src="assets/img/cancel.png"/>
     </div>

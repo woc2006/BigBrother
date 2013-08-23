@@ -394,7 +394,7 @@ ul{
 }
 
 #rule-list .edit-sub label{
-    width:70px;
+    width:80px;
 }
 
 #rule-list .edit-sub input{
@@ -407,6 +407,10 @@ ul{
 
 #rule-list #edit-addition-sub span{
     width:184px;
+}
+
+#rule-list #edit-filter{
+    width:420px;
 }
 /*page config*/
 #config{

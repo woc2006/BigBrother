@@ -34,6 +34,7 @@ var getEditResult = function(target){
         prefix:'',
         separator:'',
         additional: 0,
+        filter: $('#edit-filter').val().trim(),
         speed: ~~parseInt($('#edit-speed').val().trim())
     };
     if($('#edit-combo').hasClass('checkbox-on')){
@@ -287,6 +288,21 @@ var ruleInit = function(){
             SelDir.trigger('click');
         }else{
             SelFile.trigger('click');
+        }
+    });
+
+    ruleList.on('click','input',function(e){
+        var target = $(this),
+            id = target.attr('id');
+        switch(id){
+            case 'edit-filter':
+                var offset = $('#rule-edit').offset();
+                Tips.showTips('edit-filter',{
+                    top: offset.top + 30,
+                    left:offset.left + 164,
+                    max: 999
+                });
+                break;
         }
     });
 
