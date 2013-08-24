@@ -300,7 +300,7 @@ var ruleInit = function(){
                 Tips.showTips('edit-filter',{
                     top: offset.top + 30,
                     left:offset.left + 164,
-                    max: 999
+                    max: 1
                 });
                 break;
         }
