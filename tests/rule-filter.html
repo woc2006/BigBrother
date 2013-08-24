@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unit Test Runner</title>
+    <script type="text/javascript" src="./qunit-1.12.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="./qunit-1.12.0.css" media="all">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+    exports = {};
+    require = function(){};
+</script>
+<script type="text/javascript" src="../proxy/rule.js"></script>
+<script type="text/javascript">
+    var isRuleEnable = function(rule, req){
+        rule.filterArr = buildFilterArr(rule.filter);
+        return exports.isRuleEnable(rule, req);
+    }
+    test('basic filter',function(){
+        var rule = {};
+        rule.filter = 'a=1';
+        var req = {};
+        req.paramQuery ={
+            a:1
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+        req.paramQuery = {
+            a: 2
+        }
+        deepEqual(isRuleEnable(rule, req), false);
+        req.paramQuery = {
+            a: '1'
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+        req.paramQuery = null;
+        deepEqual(isRuleEnable(rule, req), false);
+        rule.filter = '';
+        deepEqual(isRuleEnable(rule, req), true);
+    });
+
+    test('not equal filter',function(){
+        var rule = {};
+        rule.filter = 'a!=1';
+        var req = {};
+        req.paramQuery ={
+            a:1
+        }
+        deepEqual(isRuleEnable(rule, req), false);
+        req.paramQuery = {
+            a :'1'
+        }
+        deepEqual(isRuleEnable(rule, req), false);
+        req.paramQuery = {
+            a: 2
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+    });
+
+    test('post/get filter',function(){
+        var rule = {};
+        rule.filter = 'a=1';
+        var req = {};
+        req.paramQuery = {
+            b:1
+        }
+        req.paramPost ={
+            a:1
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+        rule.filter = 'b=1';
+        deepEqual(isRuleEnable(rule, req), true);
+    });
+
+    test('mixed filter',function(){
+        var rule = {};
+        rule.filter = 'a=1&b=2 c=3 d=foo';
+        var req = {};
+        req.paramQuery = {
+            a: 1,
+            b: 2,
+            c: 3
+        }
+        req.paramPost ={
+            d: 'foo'
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+        req.paramPost = null;
+        deepEqual(isRuleEnable(rule, req), false);
+        rule.filter = 'a!=1 b=2 c!=3';
+        req.paramQuery = {
+            a: 2,
+            b: 2,
+            c: 2
+        }
+        deepEqual(isRuleEnable(rule, req), true);
+        req.paramQuery = {
+            a: 1,
+            b: 2,
+            c: 3
+        }
+        deepEqual(isRuleEnable(rule, req), false);
+
+    });
+
+    test('complex filter',function(){
+        var rule = {};
+        rule.filter = 'a';
+        var req = {};
+        req.paramQuery = {
+            a: 0
+        }
+        deepEqual(isRuleEnable(rule,req), true);
+        req.paramQuery = {};
+        deepEqual(isRuleEnable(rule,req), false);
+        rule.filter = 'a b c=1';
+        req.paramQuery = {
+            b: 0,
+            c: '1'
+        }
+        deepEqual(isRuleEnable(rule,req), false);
+        req.paramPost = {
+            a: 1
+        }
+        deepEqual(isRuleEnable(rule,req), true);
+
+    })
+</script>
+</body>
+</html>

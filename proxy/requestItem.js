@@ -1,9 +1,8 @@
 var qs = require('qs');
 
-function RequestItem(req, res, matched, callback){
+function RequestItem(req, res, callback){
     this.req = req;
     this.res = res;
-    this.matched = matched;
     this.callback = callback;
     this.run();
 }
@@ -40,10 +39,10 @@ RequestItem.methods({
                 }catch(e){
                     req.paramPost = null;
                 }
-                self.callback(req, self.res, self.matched);
+                self.callback(req, self.res);
             });
         }else{
-            this.callback(this.req, this.res, this.matched);
+            this.callback(this.req, this.res);
         }
     }
 });

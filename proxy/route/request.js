@@ -82,6 +82,12 @@ exports.process = function(req, res){
     return true;
 };
 
+exports.processDefaultReturn = function(req, res, status){
+    res.setStatus(status);
+    res.end();
+    sessionBridge.addSession(req,res || {});
+};
+
 exports.processAnotherUrl = function(req, res, url){
     var _parsed = Url.parse(url);
     var conf = {

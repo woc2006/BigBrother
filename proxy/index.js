@@ -36,24 +36,27 @@ exports.process = function(req, res){
     req._parsedUrl = _parsedUrl;
     var url = req.url;
 
-    var matched = Rules.matchRule(url);
-    var reqItem = new RequestItem(req, res, matched, function(_req, _res, _matched){
-        var resItem = new ResponseItem(_res, _matched);
-        if(!_matched || !_matched.files.length || !_matched.files[0]){
+    var reqItem = new RequestItem(req, res, function(_req, _res){
+        var matched = Rules.matchRule(_req);
+        var resItem = new ResponseItem(_res, matched);
+        if(!matched || !matched.files.length || !matched.files[0]){
             ProcessRequest.process(_req, resItem);
             return;
         }
-        switch (_matched.meta.type){
+        switch (matched.meta.type){
             case 'Host':
-                _req._parsedUrl.hostname = _matched.files[0];
-                _req._parsedUrl.port = parseInt(_matched.files[1] || 80);
+                _req._parsedUrl.hostname = matched.files[0];
+                _req._parsedUrl.port = parseInt(matched.files[1] || 80);
                 ProcessRequest.process(_req, resItem);
                 break;
+            case 'Status':
+                ProcessRequest.processDefaultReturn(_req, resItem, parseInt(matched.files[0]) || 404);
+                break;
             case 'Combo':
-                ProcessCombo.process(_req, resItem, _matched.files, _matched.remote);
+                ProcessCombo.process(_req, resItem, matched.files, matched.remote);
                 break;
             default:
-                var str = _matched.files[0];
+                var str = matched.files[0];
                 if(regHttp.test(str)){
                     ProcessRequest.processAnotherUrl(_req, resItem, str);
                 }else{
