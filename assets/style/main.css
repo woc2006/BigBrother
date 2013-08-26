@@ -10,7 +10,6 @@
 
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
-    background: rgba(252,195,49,0.8);
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 /*
@@ -112,10 +111,6 @@ ul{
     -webkit-border-radius: 22px 22px;
 }
 
-.checkbox-on{
-    background-color: #528CE0;
-}
-
 .colorpicker{
     display: inline-block;
     border: 1px solid #DDD;
@@ -128,9 +123,7 @@ ul{
 }
 
 /*page sessions*/
-#sessions{
-    background-color: #ddffbf;
-}
+
 #back-des{
     color:black;
     font-size: 36px;
@@ -154,19 +147,13 @@ ul{
     height: 22px;
     line-height: 22px;
     margin-top: 1px;
-    background-color: #cdefaf;
     -webkit-user-drag:element;
     position: relative;
-}
-
-#session-list li.highlight{
-    background-color: #DAA;
 }
 
 #session-list li.ex{
     height: auto;
     margin: 0 0 2px 0;
-    background-color: #bddf9f;
     -webkit-user-drag:none;
     display: none;
     font-size:14px;
@@ -236,7 +223,6 @@ ul{
 #session-tool{
     height: 24px;
     width: 1146px;
-    background-color: #DAA;
     position: fixed;
     bottom: 10px;
     left: 10px;
@@ -260,8 +246,6 @@ ul{
 /*page rules*/
 #rules{
     -webkit-transform:translate3d(1180px,0,0);
-    -webkit-box-shadow: -3px 0 3px #6C9F00;
-    background-color: #36D792;
     z-index:2;
     -webkit-user-select:none;
 }
@@ -280,21 +264,13 @@ ul{
 #rules ul:hover{
     overflow-y: auto;
 }
+
 #rules li{
     height: 27px;
     line-height: 27px;
     margin-bottom: 1px;
-    background-color: #26C782;
     white-space: nowrap;
     position: relative;
-}
-
-#rules li.current{
-    background-color: #56F7B2;
-}
-
-#rules li.new{
-    background-color: #56F7B2;
 }
 
 #rules li.new img{
@@ -306,7 +282,6 @@ ul{
 
 #rules #rule-edit{
     height: auto;
-    background-color: #16B772;
 }
 
 #rules input{
@@ -415,9 +390,7 @@ ul{
 /*page config*/
 #config{
     -webkit-transform: translate3d(1230px,0,0);
-    -webkit-box-shadow: -3px 0 3px #6C9F00;
     -webkit-user-select:none;
-    background-color: #FFCD40;
     z-index:4;
 }
 
@@ -431,14 +404,6 @@ ul{
     background-color: white;
 }
 
-/*  not ready for toggle
-.configHead:hover{
-    background-color: #CCC;
-}  */
-
-.configBody{
-    background-color: #EFBD30;
-}
 .configBody section{
     display: inline;
 }
@@ -458,27 +423,21 @@ ul{
 
 /*tips*/
 .tips{
-    border: 1px solid #BBB;
-    background-color: white;
     padding:4px 12px;
     position: absolute;
     z-index: 100;
     display: none;
     cursor: pointer;
 }
+
 #tips label{
     text-align: right;
     padding-right: 3px;
     width: 80px;
 }
 
-#tips b{
-    color:#FF2222;
-}
-
 #tips .tipsContinue{
     text-align: center;
-    color:#777;
     text-decoration: underline;
 }
 
