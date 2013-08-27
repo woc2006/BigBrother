@@ -339,6 +339,8 @@ var buildMatchedResult = function(rule, req){
     var match = rule.matchReg.exec(url); //always matched
     var resultArr = [];
     var orgArr = [];
+    match[1] = match[1] || '';  //we don't want undefined
+    match[2] = match[1] || '';
     if(rule.type == 'Addition'){
         resultArr.push('');
     }else if(rule.type == 'Host'){
