@@ -243,6 +243,14 @@ ul{
     margin: 1px 3px 1px 1px;
 }
 
+#session-search{
+    width:250px;
+    height:20px;
+    line-height: 20px;
+    border: none;
+    display: none;
+}
+
 /*page rules*/
 #rules{
     -webkit-transform:translate3d(1180px,0,0);
