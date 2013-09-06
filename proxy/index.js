@@ -45,6 +45,7 @@ exports.process = function(req, res){
         }
         switch (matched.meta.type){
             case 'Host':
+                _req._parsedUrl.realhost = _req._parsedUrl.hostname;
                 _req._parsedUrl.hostname = matched.files[0];
                 _req._parsedUrl.port = parseInt(matched.files[1] || 80);
                 ProcessRequest.process(_req, resItem);

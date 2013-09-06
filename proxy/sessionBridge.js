@@ -11,7 +11,7 @@ var regCookieSplit = /([^\=\s]*)\=(.+)/;
 exports.addSession = function(req, res, match){
     var item = {
         status: res.res.statusCode || 500,
-        host: req._parsedUrl.hostname,
+        host: req._parsedUrl.realhost || req._parsedUrl.hostname,
         path: req._parsedUrl.pathname,
         query: req.paramQuery,
         data: req.paramPost,
