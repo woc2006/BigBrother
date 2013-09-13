@@ -74,7 +74,7 @@ exports.process = function(req, res){
                 res.writeHead(resp.res.statusCode, resp.res.headers);
                 res.end(resp.content);
             }
-            sessionBridge.addSession(req, res || {});
+            sessionBridge.addSession(req, res || {},res && res.matched);
         }
     };
 
@@ -85,7 +85,7 @@ exports.process = function(req, res){
 exports.processDefaultReturn = function(req, res, status){
     res.setStatus(status);
     res.end();
-    sessionBridge.addSession(req,res || {});
+    sessionBridge.addSession(req,res || {},res && res.matched);
 };
 
 exports.processAnotherUrl = function(req, res, url){
@@ -103,7 +103,7 @@ exports.processAnotherUrl = function(req, res, url){
             }else{
                 res.writeHead(resp.res.statusCode, resp.res.headers);
                 res.end(resp.content);
-                sessionBridge.addSession(req, res || {});
+                sessionBridge.addSession(req, res || {}, res && res.matched);
             }
         }
     };
