@@ -7,32 +7,34 @@
 }
 
 #sessions{
-    background-color: #F9EAD8;
+    background-color: rgb(247,247,247);
 }
 
 #session-list li{
-    background-color: #E9DAC8;
+    /*background-color: #E9DAC8;  */
+    border-bottom: 1px solid rgb(201,201,206);
 }
 
 #session-list li.highlight{
-    background-color: #DAA;
+    background-color: rgb(15,130,254);
 }
 
 #session-list li.ex{
-    background-color: #D9CAB8;
+    /*background-color: #D9CAB8;*/
 }
 
 #session-tool{
-    background-color: #DAA;
+    /*background-color: #DAA;*/
 }
 
 #rules{
-    -webkit-box-shadow: -3px 0 3px #DFB88B;
-    background-color: #FFE8BB;
+    -webkit-box-shadow: -3px 0 3px rgb(201,201,201);
+    background-color: rgb(237,237,237);
 }
 
 #rules li{
-    background-color: #EFC89B;
+   /* background-color: #EFC89B;    */
+    border-bottom: 1px solid rgb(201,201,201);
 }
 
 #rules li.current{

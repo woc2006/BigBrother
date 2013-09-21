@@ -3,7 +3,7 @@
 <head>
     <title>Big Brother</title>
     <link rel="stylesheet" type="text/css" href="assets/style/main.css"/>
-    <link rel="stylesheet" type="text/css" href="assets/style/theme.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/style/new-theme.css"/>
     <script type="text/javascript" src="assets/js/lib/jquery-2.0.3.js"></script>
 </head>
 <body>
@@ -13,11 +13,11 @@
     </ul>
     <div id="session-tool">
         <span>Sessions:</span><span id="session-count">4</span><input type="text" id="session-search"/>
-        <img class="toolIcon" data-tool="delete" src="assets/img/cancel.png">
+        <img class="toolIcon" data-tool="delete" src="assets/img/cancel-blue.png">
     </div>
 </div>
 <div id="rules" class="container animate">
-    <div class="icon add title">Rules</div>
+    <div class="icon add-blue title">Rules</div>
     <ul id="group-list">
         <li class="new">
             <img class="toolIcon" src="assets/img/add.png"/>
@@ -34,7 +34,7 @@
     <input type="file" id="edit-dir" style="display: none;" nwdirectory/>
 </div>
 <div id="config" class="container animate">
-    <div class="icon add title">Config</div>
+    <div class="icon add-blue title">Config</div>
 
     <div class="title2">Filters</div>
     <div class="configItem" id="config-hide">
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="title2">Display</div>
+    <div class="title2" style="margin-top: 40px">Display</div>
     <div class="configItem" id="config-style">
         <div class="configHead title3">Matched rules style</div>
         <div class="configBody">
@@ -92,7 +92,7 @@
 
 <script type="text/javascript">
     require('./assets/js/init').init();
-    //require('./index');
+    require('./index');
 </script>
 </body>
 </html>

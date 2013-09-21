@@ -25,10 +25,16 @@ var togglePage = function(target, id){
 }
 
 var bind = function(){
-    $('.container .add').on('click',function(e){
-        var target = $(e.target).parent(),
-            id = target.attr('id');
-        togglePage(target, id);
+    $(window.document.body).on('click','.container',function(e){
+        var target = $(this);
+        var id = target.attr('id');
+        if(id == 'sessions') return;
+        var offset = target.offset();
+        var delta = e.clientX - offset.left;
+        if(delta > 0 && delta < 40){
+            togglePage(target, id);
+            return false;
+        }
     });
     keyControl.on(function(e){
         if(e.ctrlKey){

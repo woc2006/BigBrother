@@ -1,0 +1,70 @@
+::-webkit-scrollbar-thumb {
+  background: #c9c9c9;
+}
+.checkbox-on {
+  background-color: #4dd963;
+}
+.title {
+  color: #0f82fe;
+}
+.title2 {
+  color: #0f82fe;
+}
+.title3 {
+  color: #0f82fe;
+}
+#sessions {
+  background-color: #f7f7f7;
+}
+#session-list li {
+  /*background-color: #E9DAC8;  */
+
+  border-bottom: 1px solid #c9c9c9;
+}
+#session-list li.highlight {
+  background-color: #0f82fe;
+  color: white;
+}
+#session-list li.ex {
+  /*background-color: #D9CAB8;*/
+
+}
+#session-tool {
+  /*background-color: #DAA;*/
+
+}
+#rules {
+  -webkit-box-shadow: -3px 0 3px #c9c9c9;
+  background-color: #eaeaea;
+}
+#rules li {
+  border-bottom: 1px solid #c9c9c9;
+}
+#rules li.current {
+  background-color: #0f82fe;
+  color: white;
+}
+#rules li.new {
+  background-color: #0f82fe;
+  color: white;
+}
+#config {
+  -webkit-box-shadow: -3px 0 3px #c9c9c9;
+  background-color: #e3e3e3;
+}
+.configBody {
+  /*background-color: darken(@gary,5%);  */
+
+}
+.configHead {
+  border-bottom: 1px solid #c9c9c9;
+}
+.tips {
+  border-bottom: 1px solid #c9c9c9;
+}
+#tips b {
+  color: #0f82fe;
+}
+#tips .tipsContinue {
+  color: #777;
+}
