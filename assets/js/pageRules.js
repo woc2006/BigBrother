@@ -3,6 +3,7 @@ var ejs = require('ejs');
 var Config = require('../../proxy/rule');
 var Tips = require('./tipsControl');
 var Util = require('./util');
+var path = require('path');
 var CheckBox = require('./interface/checkbox').CheckBox.getInstance();
 
 var groupList = $('#group-list');
@@ -439,6 +440,11 @@ var ruleInit = function(){
         var val = target.val().trim();
         target.val('');
         if(val){
+            //check if target end with /
+            var targetUrl = $('#edit-source').val();
+            if(targetUrl.charAt(targetUrl.length-1) == '/' && val.charAt(val.length -1) != path.sep){
+                val += path.sep;
+            }
             dest.val(val);
         }
     }
