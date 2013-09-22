@@ -98,12 +98,12 @@ ul{
 .checkbox{
     display: inline-block;
     background: white;
-    width: 22px;
-    height: 22px;
-    margin:-3px 3px 0 3px;
+    width: 14px;
+    height: 14px;
+    margin:-3px 8px 0 8px;
     position: relative;
     vertical-align: middle;
-    -webkit-border-radius: 22px 22px;
+    -webkit-border-radius: 14px 14px;
 }
 
 .colorpicker{
